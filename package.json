@@ -1,0 +1,27 @@
+{
+  "name": "youtubelive-comments",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "repository": "https://github.com/LinaTsukusu/youtubelive-comments.git",
+  "author": "LinaTsukusu <lina.tsukusu@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "debug": "ts-node -r tsconfig-paths/register src/debug.ts",
+    "build": "tsc",
+    "start": "node dist"
+  },
+  "devDependencies": {
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.11",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.1.0",
+    "ts-node": "^8.4.1",
+    "tsconfig-paths": "^3.9.0",
+    "tslib": "^1.10.0",
+    "typescript": "^3.6.3"
+  },
+  "dependencies": {
+    "axios": "^0.19.0"
+  }
+}
