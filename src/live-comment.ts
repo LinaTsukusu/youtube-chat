@@ -3,9 +3,18 @@ import axios from 'axios'
 
 
 interface CommentItem {
-  authorName: string
-  message: string
-  time: Date
+  "id":string
+  "author": {
+    "name": string
+    "thumbnail": string
+    "channelId": string
+    "badge"?: {
+      "thumbnail": string
+      "label": string
+    }
+  }
+  "text": string
+  "timestamp": number
 }
 
 
@@ -34,34 +43,54 @@ export class LiveComment extends EventEmitter {
       this.liveId = liveRes.data.match(/"watchEndpoint":{"videoId":"(\w*)"}/gm)[0].match(/"videoId":"(.*)"/)[1] as string
     }
     // TODO スパチャとか対応
-    // TODO 情報量増やす
     // TODO 時間でfilterじゃなくてsliceする
     this.observer = setInterval(async () => {
+      const start = process.hrtime()
       const res = await axios.get(`https://www.youtube.com/live_chat?v=${this.liveId}&pbj=1`, {headers: this.headers})
-      // console.log(res)
-      const items = res.data[1].response.contents.liveChatRenderer.actions.slice(0, -1)
-      items.filter((v: any) => {
+      let items = res.data[1].response.contents.liveChatRenderer.actions.slice(0, -1)
+      console.log(JSON.stringify(items[2].addChatItemAction.item.liveChatTextMessageRenderer))
+      items = items.filter((v: any) => {
           try {
             return LiveComment.usecToTime(v.addChatItemAction.item.liveChatTextMessageRenderer.timestampUsec) >= this.prevTime
           } catch (e) {
             return false
           }
-        })
-        .map((v: any) => {
+        }).map((v: any) => {
           const item = v.addChatItemAction.item.liveChatTextMessageRenderer
-          return {
-            authorName: item.authorName.simpleText,
-            message: item.message.runs[0].text,
-            time: new Date(LiveComment.usecToTime(v.addChatItemAction.item.liveChatTextMessageRenderer.timestampUsec)),
+          const data: CommentItem = {
+            id: item.id,
+            author: {
+              name: item.authorName.simpleText,
+              thumbnail: item.authorPhoto.thumbnails.pop().url,
+              channelId: item.authorExternalChannelId,
+            },
+            text: item.message.runs[0].text,
+            timestamp: LiveComment.usecToTime(item.timestampUsec),
           }
-        }).forEach((v: CommentItem) => {
-          this.emit('comment', v)
-          this.prevTime = v.time.getTime() + 1
+
+          if (item.authorBadges) {
+            const badge = item.authorBadges[0].liveChatAuthorBadgeRenderer
+            data.author.badge = {
+              thumbnail: badge.customThumbnail.thumbnails.pop().url,
+              label: badge.tooltip,
+            }
+          }
+
+          return data
         })
+
+      items.forEach((v: CommentItem) => {
+        this.emit('comment', v)
+      })
+      if (items) {
+        this.prevTime = items[items.length - 1].timestamp + 1
+      }
+
+      console.log(`${process.hrtime(start)[1] / 1000000}ms`)
     }, this.interval)
   }
 
   private static usecToTime(usec: string): number {
-    return Number(usec) / 1000
+    return Math.floor(Number(usec) / 1000)
   }
 }

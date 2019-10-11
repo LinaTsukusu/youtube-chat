@@ -7,7 +7,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "debug": "ts-node -r tsconfig-paths/register src/debug.ts",
+    "debug": "NODE_ENV=development ts-node -r tsconfig-paths/register src/debug.ts",
     "build": "tsc",
     "start": "node dist"
   },
