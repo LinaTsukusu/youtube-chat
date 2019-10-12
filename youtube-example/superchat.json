@@ -1,0 +1,162 @@
+  {
+    "addChatItemAction": {
+      "item": {
+        "liveChatPaidMessageRenderer": {
+          "id": "ChwKGkNKTHJqWVdvbE9VQ0ZUTEVUQUlkQ0o0RVlB",
+          "timestampUsec": "1570800562455847",
+          "authorName": {
+            "simpleText": "名前"
+          },
+          "authorPhoto": {
+            "thumbnails": [
+              {
+                "url": "https://yt3.ggpht.com/-219iV0TrmTY/AAAAAAAAAAI/AAAAAAAAAAA/lEZ2eECLskY/s32-c-k-no-mo-rj-c0xfffffff/photo.jpg",
+                "width": 32,
+                "height": 32
+              },
+              {
+                "url": "https://yt3.ggpht.com/-219iV0TrmTY/AAAAAAAAAAI/AAAAAAAAAAA/lEZ2eECLskY/s64-c-k-no-mo-rj-c0xfffffff/photo.jpg",
+                "width": 64,
+                "height": 64
+              }
+            ]
+          },
+          "purchaseAmountText": {
+            "simpleText": "￥1,840"
+          },
+          "message": {
+            "runs": [
+              {
+                "text": "お初です。いつも楽しい配信ありがとうございます。おやつ代にして下さい。"
+              }
+            ]
+          },
+          "headerBackgroundColor": 4294947584,
+          "headerTextColor": 3741319168,
+          "bodyBackgroundColor": 4294953512,
+          "bodyTextColor": 3741319168,
+          "authorExternalChannelId": "UCy8DgBoHW9RjeNey7-2D_1QQ",
+          "authorNameTextColor": 2315255808,
+          "contextMenuEndpoint": {
+            "clickTrackingParams": "CBIQ7rsEIhMIoY_YkKiU5QIVGoTCCh1oZwfU",
+            "commandMetadata": {
+              "webCommandMetadata": {
+                "ignoreNavigation": true
+              }
+            },
+            "liveChatItemContextMenuEndpoint": {
+              "params": "Q2g0S0hBb2FRMHBNY21wWlYyOXNUMVZEUmxSTVJWUkJTV1JEU2pSRldVRVFBQm80Q2cwS0N6ZDVSR2x1TmtrMldYTnJLaWNLR0ZWRFdqRjRkVU5MTVd0T2JXNDFVbnBRV1VsYWIzQXpkeElMTjNsRWFXNDJTVFpaYzJzZ0FTZ0VNaG9LR0ZWRGVUaEVaMEp2U0ZjNVVtcGxUbVY1TnkweVJGOHhVUSUzRCUzRA=="
+            }
+          },
+          "timestampColor": 2147483648,
+          "contextMenuAccessibility": {
+            "accessibilityData": {
+              "label": "コメントの操作"
+            }
+          },
+          "trackingParams": "CBIQ7rsEIhMIoY_YkKiU5QIVGoTCCh1oZwfU"
+        }
+      }
+    }
+  },
+  {
+    "addLiveChatTickerItemAction": {
+      "item": {
+        "liveChatTickerPaidMessageItemRenderer": {
+          "id": "ChwKGkNKTHJqWVdvbE9VQ0ZUTEVUQUlkQ0o0RVlB",
+          "amount": {
+            "simpleText": "￥1,840"
+          },
+          "amountTextColor": 3741319168,
+          "startBackgroundColor": 4294953512,
+          "endBackgroundColor": 4294947584,
+          "authorPhoto": {
+            "thumbnails": [
+              {
+                "url": "https://yt3.ggpht.com/-219iV0TrmTY/AAAAAAAAAAI/AAAAAAAAAAA/lEZ2eECLskY/s32-c-k-no-mo-rj-c0xfffffff/photo.jpg",
+                "width": 32,
+                "height": 32
+              },
+              {
+                "url": "https://yt3.ggpht.com/-219iV0TrmTY/AAAAAAAAAAI/AAAAAAAAAAA/lEZ2eECLskY/s64-c-k-no-mo-rj-c0xfffffff/photo.jpg",
+                "width": 64,
+                "height": 64
+              }
+            ]
+          },
+          "durationSec": 291,
+          "showItemEndpoint": {
+            "clickTrackingParams": "CBAQsMgEIhMIoY_YkKiU5QIVGoTCCh1oZwfU",
+            "commandMetadata": {
+              "webCommandMetadata": {
+                "ignoreNavigation": true
+              }
+            },
+            "showLiveChatItemEndpoint": {
+              "renderer": {
+                "liveChatPaidMessageRenderer": {
+                  "id": "ChwKGkNKTHJqWVdvbE9VQ0ZUTEVUQUlkQ0o0RVlB",
+                  "timestampUsec": "1570800562455847",
+                  "authorName": {
+                    "simpleText": "名前"
+                  },
+                  "authorPhoto": {
+                    "thumbnails": [
+                      {
+                        "url": "https://yt3.ggpht.com/-219iV0TrmTY/AAAAAAAAAAI/AAAAAAAAAAA/lEZ2eECLskY/s32-c-k-no-mo-rj-c0xfffffff/photo.jpg",
+                        "width": 32,
+                        "height": 32
+                      },
+                      {
+                        "url": "https://yt3.ggpht.com/-219iV0TrmTY/AAAAAAAAAAI/AAAAAAAAAAA/lEZ2eECLskY/s64-c-k-no-mo-rj-c0xfffffff/photo.jpg",
+                        "width": 64,
+                        "height": 64
+                      }
+                    ]
+                  },
+                  "purchaseAmountText": {
+                    "simpleText": "￥1,840"
+                  },
+                  "message": {
+                    "runs": [
+                      {
+                        "text": "お初です。いつも楽しい配信ありがとうございます。おやつ代にして下さい。"
+                      }
+                    ]
+                  },
+                  "headerBackgroundColor": 4294947584,
+                  "headerTextColor": 3741319168,
+                  "bodyBackgroundColor": 4294953512,
+                  "bodyTextColor": 3741319168,
+                  "authorExternalChannelId": "UCy8DgBoHW9RjeNey7-2D_1QQ",
+                  "authorNameTextColor": 2315255808,
+                  "contextMenuEndpoint": {
+                    "clickTrackingParams": "CBEQ7rsEIhMIoY_YkKiU5QIVGoTCCh1oZwfU",
+                    "commandMetadata": {
+                      "webCommandMetadata": {
+                        "ignoreNavigation": true
+                      }
+                    },
+                    "liveChatItemContextMenuEndpoint": {
+                      "params": "Q2g0S0hBb2FRMHBNY21wWlYyOXNUMVZEUmxSTVJWUkJTV1JEU2pSRldVRVFBQm80Q2cwS0N6ZDVSR2x1TmtrMldYTnJLaWNLR0ZWRFdqRjRkVU5MTVd0T2JXNDFVbnBRV1VsYWIzQXpkeElMTjNsRWFXNDJTVFpaYzJzZ0FTZ0VNaG9LR0ZWRGVUaEVaMEp2U0ZjNVVtcGxUbVY1TnkweVJGOHhVUSUzRCUzRA=="
+                    }
+                  },
+                  "timestampColor": 2147483648,
+                  "contextMenuAccessibility": {
+                    "accessibilityData": {
+                      "label": "コメントの操作"
+                    }
+                  },
+                  "trackingParams": "CBEQ7rsEIhMIoY_YkKiU5QIVGoTCCh1oZwfU"
+                }
+              }
+            }
+          },
+          "authorExternalChannelId": "UCy8DgBoHW9RjeNey7-2D_1Q",
+          "fullDurationSec": 300,
+          "trackingParams": "CBAQsMgEIhMIoY_YkKiU5QIVGoTCCh1oZwfU"
+        }
+      },
+      "durationSec": "291"
+    }
+  },

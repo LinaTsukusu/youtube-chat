@@ -1,0 +1,45 @@
+{
+  "message": {
+    "runs": [
+      {
+        "text":"すももさん"
+      }
+    ]
+  },
+  "authorName":{
+    "simpleText":"名前"
+  },
+  "authorPhoto":{
+    "thumbnails":[
+      {
+        "url":"https://yt3.ggpht.com/--gzmaMZuQiU/AAAAAAAAAAI/AAAAAAAAAAA/ly68IlNWOko/s32-c-k-no-mo-rj-c0xfffffff/photo.jpg",
+        "width": 32,
+        "height":32
+      },
+      {
+        "url":"https://yt3.ggpht.com/--gzmaMZuQiU/AAAAAAAAAAI/AAAAAAAAAAA/ly68IlNWOko/s64-c-k-no-mo-rj-c0xfffffff/photo.jpg",
+        "width":64,
+        "height":64
+      }
+    ]
+  },
+  "contextMenuEndpoint":{
+    "clickTrackingParams":"CAEQl98BIhMI366cwZCU5QIVc85MAh2nhAXK",
+    "commandMetadata":{
+      "webCommandMetadata":{
+        "ignoreNavigation":true
+      }
+    },
+    "liveChatItemContextMenuEndpoint":{
+      "params":"Q2pzS09Rb2FRMHRVVWpVMGFWRnNUMVZEUmxsblFURm5RV1IzU1dkTE4yY1NHME5MVEdwMk5WZE1iRTlWUTBaUllqSlhRVzlrZWsxelFtOW5NUkFBR2t3U0lRb1lWVU5hV1hsb1oyOVdNekUwUTAweE5IcENSRFoyWkRSQkVnVXZiR2wyWlNvbkNoaFZRMXBaZVdobmIxWXpNVFJEVFRFMGVrSkVOblprTkVFU0MyTTNjRnBxVW5SSlNIUTRJQUVvQkRJYUNoaFZRMmQzVkVOaVRrbFROamxrUzFSUmRVbEZPRkJQVFdjJTNE"
+    }
+  },
+  "id":"CjkKGkNLVFI1NGlRbE9VQ0ZZZ0ExZ0Fkd0lnSzdnEhtDS0xqdjVXTGxPVUNGUWIyV0FvZHpNc0JvZzE%3D",
+  "timestampUsec":"1570794112673956",
+  "authorExternalChannelId":"UCgwTCbNIS69dKTQuIE8POMgg",
+  "contextMenuAccessibility":{
+    "accessibilityData":{
+      "label":"コメントの操作"
+    }
+  }
+}

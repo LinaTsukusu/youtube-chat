@@ -1,0 +1,67 @@
+{
+  "id": "CjoKGkNJNkpoWUdTbE9VQ0ZibjF3UW9kNm84TU1BEhxDUHZVb3NhUmxPVUNGUUt3V0FvZDQyVURRUS0w",
+  "timestampUsec": "1570794633249934",
+  "authorName": {
+    "simpleText": "名前"
+  },
+  "authorPhoto": {
+    "thumbnails": [
+      {
+        "url": "https://yt3.ggpht.com/-nxvXk28dF10/AAAAAAAAAAI/AAAAAAAAAAA/IuMUNXxyf8M/s32-c-k-no-mo-rj-c0xfffffff/photo.jpg",
+        "width": 32,
+        "height": 32
+      },
+      {
+        "url": "https://yt3.ggpht.com/-nxvXk28dF10/AAAAAAAAAAI/AAAAAAAAAAA/IuMUNXxyf8M/s64-c-k-no-mo-rj-c0xfffffff/photo.jpg",
+        "width": 64,
+        "height": 64
+      }
+    ]
+  },
+  "message": {
+    "runs": [
+      {
+        "text": "モンハン"
+      }
+    ]
+  },
+  "contextMenuEndpoint": {
+    "clickTrackingParams": "CAEQl98BIhMIgIOam5KU5QIVcFaFCh1Fjwhu",
+    "commandMetadata": {
+      "webCommandMetadata": {
+        "ignoreNavigation": true
+      }
+    },
+    "liveChatItemContextMenuEndpoint": {
+      "params": "Q2p3S09nb2FRMGsyU21oWlIxTnNUMVZEUm1KdU1YZFJiMlEyYnpoTlRVRVNIRU5RZGxWdmMyRlNiRTlWUTBaUlMzZFhRVzlrTkRKVlJGRlJMVEFRQUJwTUVpRUtHRlZEV2xsNWFHZHZWak14TkVOTk1UUjZRa1EyZG1RMFFSSUZMMnhwZG1VcUp3b1lWVU5hV1hsb1oyOVdNekUwUTAweE5IcENSRFoyWkRSQkVndGpOM0JhYWxKMFNVaDBPQ0FCS0FReUdnb1lWVU5HVlZoaVEycFdhRzFEYjNwUFFWUTNUa0ZVYmtsUg=="
+    }
+  },
+  "authorBadges": [
+    {
+      "liveChatAuthorBadgeRenderer": {
+        "customThumbnail": {
+          "thumbnails": [
+            {
+              "url": "https://yt3.ggpht.com/Plw6q1_iM_3Ry-AJq7aXMxcumNhqmvSvKo5uFSB00I4m7jKPGd__YyRjzJqORIaKRGdNTnDCIEg=s16-c-k"
+            },
+            {
+              "url": "https://yt3.ggpht.com/Plw6q1_iM_3Ry-AJq7aXMxcumNhqmvSvKo5uFSB00I4m7jKPGd__YyRjzJqORIaKRGdNTnDCIEg=s32-c-k"
+            }
+          ]
+        },
+        "tooltip": "メンバー（7 か月）",
+        "accessibility": {
+          "alityData": {
+            "label": "メンバー（7 か月）"
+          }
+        }
+      }
+    }
+  ],
+  "authorExternalChannelId": "UCFUXbCjVhmCozOAT7NATnnIQ",
+  "contextMenuAccessibility": {
+    "accessibilityData": {
+      "label": "コメントの操作"
+    }
+  }
+}

@@ -3,18 +3,22 @@ import axios from 'axios'
 
 
 interface CommentItem {
-  "id":string
-  "author": {
-    "name": string
-    "thumbnail": string
-    "channelId": string
-    "badge"?: {
-      "thumbnail": string
-      "label": string
+  id: string
+  author: {
+    name: string
+    thumbnail: string
+    channelId: string
+    badge?: {
+      thumbnail: string
+      label: string
     }
   }
-  "text": string
-  "timestamp": number
+  message: string
+  superchat?: {
+    amount: string
+    color: number
+  }
+  timestamp: number
 }
 
 
@@ -42,13 +46,14 @@ export class LiveComment extends EventEmitter {
       const liveRes = await axios.get(`https://www.youtube.com/channel/${this.channelId}/live`, {headers: this.headers})
       this.liveId = liveRes.data.match(/"watchEndpoint":{"videoId":"(\w*)"}/gm)[0].match(/"videoId":"(.*)"/)[1] as string
     }
-    // TODO スパチャとか対応
-    // TODO 時間でfilterじゃなくてsliceする
+
     this.observer = setInterval(async () => {
-      const start = process.hrtime()
+      // const start = process.hrtime()
       const res = await axios.get(`https://www.youtube.com/live_chat?v=${this.liveId}&pbj=1`, {headers: this.headers})
+      // console.log(res.data[1].response.contents.messageRenderer.text)
+      // console.log(res.data[1].response.contents.liveChatRenderer)
+      console.log(this.liveId)
       let items = res.data[1].response.contents.liveChatRenderer.actions.slice(0, -1)
-      console.log(JSON.stringify(items[2].addChatItemAction.item.liveChatTextMessageRenderer))
       items = items.filter((v: any) => {
           try {
             return LiveComment.usecToTime(v.addChatItemAction.item.liveChatTextMessageRenderer.timestampUsec) >= this.prevTime
@@ -57,6 +62,7 @@ export class LiveComment extends EventEmitter {
           }
         }).map((v: any) => {
           const item = v.addChatItemAction.item.liveChatTextMessageRenderer
+          // console.log(JSON.stringify(item.message.runs))
           const data: CommentItem = {
             id: item.id,
             author: {
@@ -64,7 +70,7 @@ export class LiveComment extends EventEmitter {
               thumbnail: item.authorPhoto.thumbnails.pop().url,
               channelId: item.authorExternalChannelId,
             },
-            text: item.message.runs[0].text,
+            message: item.message.runs,
             timestamp: LiveComment.usecToTime(item.timestampUsec),
           }
 
@@ -76,17 +82,24 @@ export class LiveComment extends EventEmitter {
             }
           }
 
+          if (item.purchaseAmountText) {
+            data.superchat = {
+              amount: item.purchaseAmountText.simpleText,
+              color: item.bodyBackgroundColor,
+            }
+          }
+
           return data
         })
 
       items.forEach((v: CommentItem) => {
         this.emit('comment', v)
       })
-      if (items) {
+      if (items.length > 0) {
         this.prevTime = items[items.length - 1].timestamp + 1
       }
 
-      console.log(`${process.hrtime(start)[1] / 1000000}ms`)
+      // console.log(`${process.hrtime(start)[1] / 1000000}ms`)
     }, this.interval)
   }
 
