@@ -7,9 +7,9 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "debug": "NODE_ENV=development ts-node -r tsconfig-paths/register src/debug.ts",
     "build": "tsc",
-    "start": "node dist"
+    "start": "node dist",
+    "debug": "tsc && NODE_ENV=development node dist/debug.js"
   },
   "devDependencies": {
     "@types/jest": "^24.0.18",

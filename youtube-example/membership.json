@@ -1,0 +1,76 @@
+{
+  "addChatItemAction": {
+    "item": {
+      "liveChatMembershipItemRenderer": {
+        "id": "ChwKGkNQU2NyTGUzbHVVQ0Zhakl3UW9kOXBVQ3NB",
+        "timestampUsec": "1570873398726260",
+        "authorExternalChannelId": "UCmo9i_TruPC6wl4jDwPjmCA",
+        "headerSubtext": {
+          "runs": [
+            {
+              "text": "上級エンジニア"
+            },
+            {
+              "text": " へようこそ！"
+            }
+          ]
+        },
+        "authorName": {
+          "simpleText": "坂本龍馬"
+        },
+        "authorPhoto": {
+          "thumbnails": [
+            {
+              "url": "https://yt3.ggpht.com/-okyQWt-sbds/AAAAAAAAAAI/AAAAAAAAAAA/QuV4MgRlrCo/s32-c-k-no-mo-rj-c0xffffff/photo.jpg",
+              "width": 32,
+              "height": 32
+            },
+            {
+              "url": "https://yt3.ggpht.com/-okyQWt-sbds/AAAAAAAAAAI/AAAAAAAAAAA/QuV4MgRlrCo/s64-c-k-no-mo-rj-c0xffffff/photo.jpg",
+              "width": 64,
+              "height": 64
+            }
+          ]
+        },
+        "authorBadges": [
+          {
+            "liveChatAuthorBadgeRenderer": {
+              "customThumbnail": {
+                "thumbnails": [
+                  {
+                    "url": "https://yt3.ggpht.com/6ciACxu3AdESYrz3kspn1Cq3q7OsMbuOkGlGaH2KNEUfNqQverkovlXm2Q-5ik2rI6uZ5Rtz=s16-c-k"
+                  },
+                  {
+                    "url": "https://yt3.ggpht.com/6ciACxu3AdESYrz3kspn1Cq3q7OsMbuOkGlGaH2KNEUfNqQverkovlXm2Q-5ik2rI6uZ5Rtz=s32-c-k"
+                  }
+                ]
+              },
+              "tooltip": "新規メンバー",
+              "accessibility": {
+                "accessibilityData": {
+                  "label": "新規メンバー"
+                }
+              }
+            }
+          }
+        ],
+        "contextMenuEndpoint": {
+          "clickTrackingParams": "CAEQl98BIhMI9J701smW5QIVgQ8qCh1ztg_s",
+          "commandMetadata": {
+            "webCommandMetadata": {
+              "ignoreNavigation": true
+            }
+          },
+          "liveChatItemContextMenuEndpoint": {
+            "params": "Q2g0S0hBb2FRMUJUWTNKTVpUTnNkVlZEUm1GcVNYZFJiMlE1Y0ZWRGMwRVFBQm80Q2cwS0N6aHlWRTVYZWxKNlZTMVJLaWNLR0ZWRGVHdFBUR2RrVG5WdGRsWkpVWEZ1TlhCelgySktRUklMT0hKVVRsZDZVbnBWTFZFZ0FTZ0VNaG9LR0ZWRGJXODVhVjlVY25WUVF6WjNiRFJxUkhkUWFtMURRUSUzRCUzRA=="
+          }
+        },
+        "contextMenuAccessibility": {
+          "accessibilityData": {
+            "label": "コメントの操作"
+          }
+        }
+      }
+    }
+  }
+}
