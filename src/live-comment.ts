@@ -2,6 +2,29 @@ import {EventEmitter} from 'events'
 import axios from 'axios'
 
 
+interface CommentItem {
+  id: string
+  author: {
+    name: string
+    thumbnail: string
+    channelId: string
+    badge?: {
+      thumbnail: string
+      label: string
+    }
+  }
+  message: any[]
+  superchat?: {
+    amount: string
+    color: number
+  }
+  membership: boolean
+  isOwner: boolean
+  timestamp: number
+}
+
+
+
 /**
  * YouTubeライブコメント取得イベント
  */
@@ -117,5 +140,13 @@ export class LiveComment extends EventEmitter {
   private static isPaid(renderer: LiveChatTextMessageRenderer | LiveChatPaidMessageRenderer | LiveChatMembershipItemRenderer)
     : renderer is LiveChatPaidMessageRenderer {
     return renderer.hasOwnProperty("purchaseAmountText")
+  }
+
+  public on(event: 'comment', listener: (comment: CommentItem) => void): this
+  public on(event: 'start', listener: (liveId: string) => void): this
+  public on(event: 'end', listener: () => void): this
+  public on(event: 'error', listener: (err: Error) => void): this
+  public on(event: string | symbol, listener: (...args: any[]) => void): this {
+    return super.on(event, listener)
   }
 }
