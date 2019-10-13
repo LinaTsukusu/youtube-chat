@@ -2,15 +2,17 @@
   "name": "youtubelive-comments",
   "version": "1.0.0",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "repository": "https://github.com/LinaTsukusu/youtubelive-comments.git",
   "author": "LinaTsukusu <lina.tsukusu@gmail.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
     "build": "tsc",
-    "start": "node dist",
+    "start": "NODE_ENV=production node dist",
     "debug": "tsc && NODE_ENV=development node dist/debug.js"
   },
+  "files": ["dist", "package.json", "README.md", "LICENSE"],
   "devDependencies": {
     "@types/jest": "^24.0.18",
     "@types/node": "^12.7.11",

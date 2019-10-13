@@ -2,6 +2,9 @@ import {EventEmitter} from 'events'
 import axios from 'axios'
 
 
+/**
+ * YouTubeライブコメント取得イベント
+ */
 export class LiveComment extends EventEmitter {
   public readonly channelId?: string
   public liveId?: string
