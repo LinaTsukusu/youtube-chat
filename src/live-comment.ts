@@ -2,28 +2,6 @@ import {EventEmitter} from 'events'
 import axios from 'axios'
 
 
-interface CommentItem {
-  id: string
-  author: {
-    name: string
-    thumbnail: string
-    channelId: string
-    badge?: {
-      thumbnail: string
-      label: string
-    }
-  }
-  message: any[]
-  superchat?: {
-    amount: string
-    color: number
-  }
-  membership: boolean
-  isOwner: boolean
-  timestamp: number
-}
-
-
 /**
  * YouTubeライブチャット取得イベント
  */
@@ -94,12 +72,17 @@ export class LiveComment extends EventEmitter {
       .map((v: Action) => {
         const messageRenderer = LiveComment.actionToRenderer(v)
         if (messageRenderer === null) { return }
+
+
         const message = 'message' in messageRenderer ? messageRenderer.message.runs : messageRenderer.headerSubtext.runs
+
         const data: CommentItem = {
           id: messageRenderer.id,
           author: {
             name: messageRenderer.authorName.simpleText,
-            thumbnail: messageRenderer.authorPhoto.thumbnails.pop()!.url,
+            thumbnail: {
+              url: messageRenderer.authorPhoto.thumbnails.pop()!.url
+            },
             channelId: messageRenderer.authorExternalChannelId,
           },
           message: message,
