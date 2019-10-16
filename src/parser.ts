@@ -11,7 +11,7 @@ interface CommentItem {
   id: string
   author: {
     name: string
-    thumbnail: ImageItem
+    thumbnail?: ImageItem
     channelId: string
     badge?: {
       thumbnail: ImageItem
@@ -29,7 +29,7 @@ interface CommentItem {
 }
 
 
-function parseThumbnailToImageItem(data: Thumbnail[], authorName: string): ImageItem | null {
+function parseThumbnailToImageItem(data: Thumbnail[], authorName: string): ImageItem | undefined {
   const thumbnail = data.pop()
   if (thumbnail) {
     return {
@@ -39,7 +39,7 @@ function parseThumbnailToImageItem(data: Thumbnail[], authorName: string): Image
       alt: authorName,
     }
   }
-  return null
+  return
 }
 
 function parseEmojiToImageItem(data: MessageEmoji): ImageItem {
@@ -73,9 +73,7 @@ export function parseData(data: Action): CommentItem | null {
     id: messageRenderer.id,
     author: {
       name: messageRenderer.authorName.simpleText,
-      thumbnail: {
-        url: messageRenderer.authorPhoto.thumbnails.pop()!.url
-      },
+      thumbnail: parseThumbnailToImageItem(messageRenderer.authorPhoto.thumbnails, messageRenderer.authorName.simpleText),
       channelId: messageRenderer.authorExternalChannelId,
     },
     message: message,
@@ -104,13 +102,4 @@ export function parseData(data: Action): CommentItem | null {
   }
 
   return ret
-})
-
-items.forEach((v: CommentItem) => {
-  this.emit('comment', v)
-})
-
-if (items.length > 0) {
-  this.prevTime = items[items.length - 1].timestamp
-}
 }
