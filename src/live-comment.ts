@@ -1,5 +1,6 @@
 import {EventEmitter} from 'events'
 import axios from 'axios'
+import {actionToRenderer, CommentItem, parseData, usecToTime} from './parser'
 
 
 /**
@@ -58,60 +59,17 @@ export class LiveComment extends EventEmitter {
       return
     }
 
-    const items = res.data[1].response.contents.liveChatRenderer.actions
-      .slice(0, -1)
+    const items = res.data[1].response.contents.liveChatRenderer.actions.slice(0, -1)
       .filter((v: Action) => {
-        const messageRenderer = LiveComment.actionToRenderer(v)
+        const messageRenderer = actionToRenderer(v)
         if (messageRenderer !== null) {
           if (messageRenderer) {
-            return LiveComment.usecToTime(messageRenderer.timestampUsec) > this.prevTime
+            return usecToTime(messageRenderer.timestampUsec) > this.prevTime
           }
         }
         return false
       })
-      .map((v: Action) => {
-        const messageRenderer = LiveComment.actionToRenderer(v)
-        if (messageRenderer === null) { return }
-
-
-        const message = 'message' in messageRenderer ? messageRenderer.message.runs : messageRenderer.headerSubtext.runs
-
-        const data: CommentItem = {
-          id: messageRenderer.id,
-          author: {
-            name: messageRenderer.authorName.simpleText,
-            thumbnail: {
-              url: messageRenderer.authorPhoto.thumbnails.pop()!.url
-            },
-            channelId: messageRenderer.authorExternalChannelId,
-          },
-          message: message,
-          membership: Boolean('headerSubtext' in messageRenderer),
-          isOwner: false,
-          timestamp: LiveComment.usecToTime(messageRenderer.timestampUsec),
-        }
-
-        if (messageRenderer.authorBadges) {
-          const badge = messageRenderer.authorBadges[0].liveChatAuthorBadgeRenderer
-          if (badge.customThumbnail) {
-            data.author.badge = {
-              thumbnail: badge.customThumbnail.thumbnails.pop()!.url,
-              label: badge.tooltip,
-            }
-          } else {
-            data.isOwner = true
-          }
-        }
-
-        if ('purchaseAmountText' in messageRenderer) {
-          data.superchat = {
-            amount: messageRenderer.purchaseAmountText.simpleText,
-            color: messageRenderer.bodyBackgroundColor,
-          }
-        }
-
-        return data
-      })
+      .map((v: Action) => parseData(v))
 
     items.forEach((v: CommentItem) => {
       this.emit('comment', v)
@@ -119,24 +77,6 @@ export class LiveComment extends EventEmitter {
 
     if (items.length > 0) {
       this.prevTime = items[items.length - 1].timestamp
-    }
-  }
-
-  private static usecToTime(usec: string): number {
-    return Math.floor(Number(usec) / 1000)
-  }
-
-  private static actionToRenderer(action: Action): LiveChatTextMessageRenderer | LiveChatPaidMessageRenderer | LiveChatMembershipItemRenderer | null {
-    if (!action.addChatItemAction) {
-      return null
-    }
-    const item = action.addChatItemAction.item
-    if (item.liveChatTextMessageRenderer) {
-      return item.liveChatTextMessageRenderer
-    } else if (item.liveChatPaidMessageRenderer) {
-      return item.liveChatPaidMessageRenderer
-    } else {
-      return item.liveChatMembershipItemRenderer!
     }
   }
 
