@@ -1,6 +1,8 @@
 # youtube-chat
 > Fetch Youtube live chat without API
 
+***You will need to take full responsibility for your action***
+
 ## Getting started
 1. Install
     - `npm i youtube-chat`
