@@ -2,3 +2,4 @@ dist
 node_modules
 debug.ts
 .idea
+*error.log
