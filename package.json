@@ -6,7 +6,7 @@
   "repository": "https://github.com/LinaTsukusu/youtube-chat.git",
   "author": "LinaTsukusu <lina.tsukusu@gmail.com>",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "scripts": {
     "build": "tsc",
     "start": "NODE_ENV=production node dist",
