@@ -6,7 +6,7 @@ import {actionToRenderer, CommentItem, parseData, usecToTime} from './parser'
 /**
  * YouTubeライブチャット取得イベント
  */
-export class LiveComment extends EventEmitter {
+export class LiveChat extends EventEmitter {
   private static readonly headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36'}
   public readonly channelId?: string
   public liveId?: string
@@ -26,7 +26,7 @@ export class LiveComment extends EventEmitter {
 
   public async start(): Promise<boolean> {
     if (this.channelId) {
-      const liveRes = await axios.get(`https://www.youtube.com/channel/${this.channelId}/live`, {headers: LiveComment.headers})
+      const liveRes = await axios.get(`https://www.youtube.com/channel/${this.channelId}/live`, {headers: LiveChat.headers})
       if (liveRes.data.match(/LIVE_STREAM_OFFLINE/)) {
         this.emit('error', new Error("Live stream offline"))
         return false
@@ -53,7 +53,7 @@ export class LiveComment extends EventEmitter {
   }
 
   private async fetchChat() {
-    const res = await axios.get(`https://www.youtube.com/live_chat?v=${this.liveId}&pbj=1`, {headers: LiveComment.headers})
+    const res = await axios.get(`https://www.youtube.com/live_chat?v=${this.liveId}&pbj=1`, {headers: LiveChat.headers})
     if (res.data[1].response.contents.messageRenderer) {
       this.stop("Live stream is finished")
       return

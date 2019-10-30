@@ -1,3 +1,3 @@
-import {LiveComment} from './live-comment'
+import {LiveChat} from './live-chat'
 
-export {LiveComment}
+export {LiveChat}
