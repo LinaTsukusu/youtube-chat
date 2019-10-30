@@ -1,6 +1,6 @@
 {
   "name": "youtube-chat",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/LinaTsukusu/youtube-chat.git",
@@ -12,8 +12,16 @@
     "start": "NODE_ENV=production node dist",
     "debug": "tsc && NODE_ENV=development node dist/debug.js"
   },
-  "files": ["dist", "package.json", "README.md", "LICENSE"],
-  "keywords": ["youtube", "chat"],
+  "files": [
+    "dist",
+    "package.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "youtube",
+    "chat"
+  ],
   "devDependencies": {
     "@types/jest": "^24.0.18",
     "@types/node": "^12.7.11",
