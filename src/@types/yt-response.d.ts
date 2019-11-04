@@ -91,6 +91,18 @@ interface LiveChatPaidMessageRenderer extends LiveChatTextMessageRenderer {
   authorNameTextColor: number
 }
 
+interface LiveChatPaidStickerRenderer extends LiveChatTextMessageRenderer {
+  purchaseAmountText: {
+    simpleText: string
+  }
+  moneyChipBackgroundColor: number
+  moneyChipTextColor: number
+  stickerDisplayWidth: number
+  stickerDisplayHeight: number
+  backgroundColor: number
+  authorNameTextColor: number
+}
+
 interface LiveChatMembershipItemRenderer extends MessageRendererBase {
   headerSubtext: {
     runs: MessageRun[]
@@ -103,6 +115,7 @@ interface ActionItem  {
     liveChatTextMessageRenderer?: LiveChatTextMessageRenderer
     liveChatPaidMessageRenderer?: LiveChatPaidMessageRenderer
     liveChatMembershipItemRenderer?: LiveChatMembershipItemRenderer
+    liveChatPaidStickerRenderer?: LiveChatPaidStickerRenderer
   },
   clientId: string
 }
