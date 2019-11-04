@@ -4,3 +4,4 @@ debug.ts
 .idea
 *error.log
 testrun.ts
+package-lock.json
