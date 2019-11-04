@@ -3,3 +3,4 @@ node_modules
 debug.ts
 .idea
 *error.log
+testrun.ts
