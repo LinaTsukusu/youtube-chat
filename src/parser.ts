@@ -56,7 +56,7 @@ function parseMessages(runs: MessageRun[]): MessageItem[] {
   })
 }
 
-export function actionToRenderer(action: Action): LiveChatTextMessageRenderer | LiveChatPaidMessageRenderer | LiveChatMembershipItemRenderer | null {
+export function actionToRenderer(action: Action): LiveChatTextMessageRenderer | LiveChatPaidMessageRenderer | LiveChatPaidStickerRenderer | LiveChatMembershipItemRenderer | null {
   if (!action.addChatItemAction) {
     return null
   }
@@ -65,6 +65,8 @@ export function actionToRenderer(action: Action): LiveChatTextMessageRenderer | 
     return item.liveChatTextMessageRenderer
   } else if (item.liveChatPaidMessageRenderer) {
     return item.liveChatPaidMessageRenderer
+  } else if (item.liveChatPaidStickerRenderer) {
+    return item.liveChatPaidStickerRenderer
   } else {
     return item.liveChatMembershipItemRenderer!
   }
@@ -103,8 +105,13 @@ export function parseData(data: Action): CommentItem | null {
       ret.isOwner = true
     }
   }
-
-  if ('purchaseAmountText' in messageRenderer) {
+  
+  if ('moneyChipTextColor' in messageRenderer) {
+    ret.superchat = {
+      amount: messageRenderer.purchaseAmountText.simpleText,
+      color: messageRenderer.backgroundColor,
+    }
+  } else if ('purchaseAmountText' in messageRenderer) {
     ret.superchat = {
       amount: messageRenderer.purchaseAmountText.simpleText,
       color: messageRenderer.bodyBackgroundColor,
