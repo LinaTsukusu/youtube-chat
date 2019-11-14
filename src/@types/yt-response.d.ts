@@ -52,6 +52,7 @@ interface MessageRendererBase {
   authorPhoto: {
     thumbnails: Thumbnail[]
   }
+  authorBadges?: AuthorBadge[]
   contextMenuEndpoint: {
     clickTrackingParams: string
     commandMetadata: {
@@ -73,11 +74,10 @@ interface MessageRendererBase {
   }
 }
 
-interface LiveChatTextMessageRenderer extends MessageRendererBase{
+interface LiveChatTextMessageRenderer extends MessageRendererBase {
   message: {
     runs: MessageRun[]
   }
-  authorBadges?: AuthorBadge[]
 }
 
 interface LiveChatPaidMessageRenderer extends LiveChatTextMessageRenderer {
@@ -91,9 +91,17 @@ interface LiveChatPaidMessageRenderer extends LiveChatTextMessageRenderer {
   authorNameTextColor: number
 }
 
-interface LiveChatPaidStickerRenderer extends LiveChatTextMessageRenderer {
+interface LiveChatPaidStickerRenderer extends MessageRendererBase {
   purchaseAmountText: {
     simpleText: string
+  }
+  sticker: {
+    thumbnails: Thumbnail[]
+    accessibility: {
+      accessibilityData: {
+        label: string
+      }
+    }
   }
   moneyChipBackgroundColor: number
   moneyChipTextColor: number

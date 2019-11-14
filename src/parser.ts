@@ -22,6 +22,7 @@ export interface CommentItem {
   superchat?: {
     amount: string
     color: number
+    sticker?: ImageItem
   }
   membership: boolean
   isOwner: boolean
@@ -79,7 +80,12 @@ export function usecToTime(usec: string): number {
 export function parseData(data: Action): CommentItem | null {
   const messageRenderer = actionToRenderer(data)
   if (messageRenderer === null) { return null }
-  const message = 'message' in messageRenderer ? messageRenderer.message.runs : messageRenderer.headerSubtext.runs
+  let message: MessageRun[] = []
+  if ('message' in messageRenderer) {
+    messageRenderer.message.runs
+  } else if ('headerSubtext' in messageRenderer) {
+    messageRenderer.headerSubtext.runs
+  }
 
   const ret: CommentItem = {
     id: messageRenderer.id,
@@ -105,11 +111,13 @@ export function parseData(data: Action): CommentItem | null {
       ret.isOwner = true
     }
   }
-  
-  if ('moneyChipTextColor' in messageRenderer) {
+
+  if ('sticker' in messageRenderer) {
     ret.superchat = {
       amount: messageRenderer.purchaseAmountText.simpleText,
       color: messageRenderer.backgroundColor,
+      sticker: parseThumbnailToImageItem(
+        messageRenderer.sticker.thumbnails, messageRenderer.sticker.accessibility.accessibilityData.label)
     }
   } else if ('purchaseAmountText' in messageRenderer) {
     ret.superchat = {
