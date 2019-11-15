@@ -82,9 +82,9 @@ export function parseData(data: Action): CommentItem | null {
   if (messageRenderer === null) { return null }
   let message: MessageRun[] = []
   if ('message' in messageRenderer) {
-    messageRenderer.message.runs
+    message = messageRenderer.message.runs
   } else if ('headerSubtext' in messageRenderer) {
-    messageRenderer.headerSubtext.runs
+    message = messageRenderer.headerSubtext.runs
   }
 
   const ret: CommentItem = {
