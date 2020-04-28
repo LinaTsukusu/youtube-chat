@@ -1,6 +1,7 @@
 import {EventEmitter} from 'events'
 import axios from 'axios'
 import {actionToRenderer, CommentItem, parseData, usecToTime} from './parser'
+import {Action} from './yt-response'
 
 
 /**
