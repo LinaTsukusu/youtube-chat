@@ -1,14 +1,14 @@
-interface Thumbnail {
+export interface Thumbnail {
   url: string
   width?: number
   height?: number
 }
 
-interface MessageText {
+export interface MessageText {
   text: string
 }
 
-interface MessageEmoji {
+export interface MessageEmoji {
   emoji: {
     emojiId: string
     shortcuts: string[]
@@ -25,9 +25,9 @@ interface MessageEmoji {
   }
 }
 
-type MessageRun = MessageText | MessageEmoji
+export type MessageRun = MessageText | MessageEmoji
 
-interface AuthorBadge {
+export interface AuthorBadge {
   liveChatAuthorBadgeRenderer: {
     customThumbnail?: {
       thumbnails: Thumbnail[]
@@ -45,7 +45,7 @@ interface AuthorBadge {
 }
 
 
-interface MessageRendererBase {
+export interface MessageRendererBase {
   authorName: {
     simpleText: string
   }
@@ -74,13 +74,13 @@ interface MessageRendererBase {
   }
 }
 
-interface LiveChatTextMessageRenderer extends MessageRendererBase {
+export interface LiveChatTextMessageRenderer extends MessageRendererBase {
   message: {
     runs: MessageRun[]
   }
 }
 
-interface LiveChatPaidMessageRenderer extends LiveChatTextMessageRenderer {
+export interface LiveChatPaidMessageRenderer extends LiveChatTextMessageRenderer {
   purchaseAmountText: {
     simpleText: string
   }
@@ -91,7 +91,7 @@ interface LiveChatPaidMessageRenderer extends LiveChatTextMessageRenderer {
   authorNameTextColor: number
 }
 
-interface LiveChatPaidStickerRenderer extends MessageRendererBase {
+export interface LiveChatPaidStickerRenderer extends MessageRendererBase {
   purchaseAmountText: {
     simpleText: string
   }
@@ -111,14 +111,14 @@ interface LiveChatPaidStickerRenderer extends MessageRendererBase {
   authorNameTextColor: number
 }
 
-interface LiveChatMembershipItemRenderer extends MessageRendererBase {
+export interface LiveChatMembershipItemRenderer extends MessageRendererBase {
   headerSubtext: {
     runs: MessageRun[]
   }
   authorBadges: AuthorBadge[]
 }
 
-interface ActionItem  {
+export interface ActionItem  {
   item: {
     liveChatTextMessageRenderer?: LiveChatTextMessageRenderer
     liveChatPaidMessageRenderer?: LiveChatPaidMessageRenderer
@@ -128,7 +128,7 @@ interface ActionItem  {
   clientId: string
 }
 
-interface Action {
+export interface Action {
   addChatItemAction?: ActionItem
   addLiveChatTickerItemAction?: any
 }

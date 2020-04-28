@@ -1,6 +1,6 @@
 import {
   Action, LiveChatMembershipItemRenderer,
-  LiveChatPaidMessageRenderer,
+  LiveChatPaidMessageRenderer, LiveChatPaidStickerRenderer,
   LiveChatTextMessageRenderer,
   MessageEmoji,
   MessageRun,
