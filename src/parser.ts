@@ -1,3 +1,12 @@
+import {
+  Action, LiveChatMembershipItemRenderer,
+  LiveChatPaidMessageRenderer,
+  LiveChatTextMessageRenderer,
+  MessageEmoji,
+  MessageRun,
+  Thumbnail,
+} from './yt-response'
+
 interface ImageItem {
   url: string
   alt: string

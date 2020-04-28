@@ -13,6 +13,9 @@
     "declaration": true,
     "baseUrl": ".",
     "outDir": "dist",
+    "typeRoots": [
+      "src/@types"
+    ],
     "types": [
       "node",
       "jest"
