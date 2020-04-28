@@ -32,7 +32,7 @@ export class LiveChat extends EventEmitter {
         this.emit('error', new Error("Live stream offline"))
         return false
       }
-      this.liveId = liveRes.data.match(/<meta property="og:image" content="https:\/\/i\.ytimg\.com\/vi\/([^\/]*)\//)[1] as string
+      this.liveId = liveRes.data.match(/"watchEndpoint":{"videoId":"(\S*?)"}/)![1] as string
     }
 
     if (!this.liveId) {
