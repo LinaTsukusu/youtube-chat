@@ -72,7 +72,9 @@ interface CommentItem {
     color: number
   }
   membership: boolean
+  isVerified: boolean
   isOwner: boolean
+  isModerator: boolean
   timestamp: number
 }
 ```
