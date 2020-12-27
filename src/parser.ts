@@ -34,7 +34,9 @@ export interface CommentItem {
     sticker?: ImageItem
   }
   membership: boolean
+  isVerified: boolean
   isOwner: boolean
+  isModerator: boolean
   timestamp: number
 }
 
@@ -107,18 +109,26 @@ export function parseData(data: Action): CommentItem | null {
     message: parseMessages(message),
     membership: Boolean('headerSubtext' in messageRenderer),
     isOwner: false,
+    isVerified: false,
+    isModerator: false,
     timestamp: usecToTime(messageRenderer.timestampUsec),
   }
 
   if (messageRenderer.authorBadges) {
-    const badge = messageRenderer.authorBadges[0].liveChatAuthorBadgeRenderer
-    if (badge.customThumbnail) {
-      ret.author.badge = {
-        thumbnail: parseThumbnailToImageItem(badge.customThumbnail.thumbnails, badge.tooltip)!,
-        label: badge.tooltip,
+    for (const entry of messageRenderer.authorBadges) {
+      const badge = entry.liveChatAuthorBadgeRenderer
+      if (badge.customThumbnail) {
+        ret.author.badge = {
+          thumbnail: parseThumbnailToImageItem(badge.customThumbnail.thumbnails, badge.tooltip)!,
+          label: badge.tooltip,
+        }
+      } else{
+        switch (badge.icon?.iconType ) {
+          case "OWNER": ret.isOwner = true; break;
+          case "VERIFIED": ret.isVerified = true; break;
+          case "MODERATOR": ret.isModerator = true; break;
+        }
       }
-    } else {
-      ret.isOwner = true
     }
   }
 
