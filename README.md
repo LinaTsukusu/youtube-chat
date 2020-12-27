@@ -42,6 +42,15 @@
     // err: Error
     liveChat.on('error', (err) => {})
     ```
+5. Start
+    ```typescript
+    // Start fetch loop
+    liveChat.start().then(ok => {
+      if (!ok) {
+        console.log("Failed to start, check emitted error")
+      }
+    })
+    ```
 
 ## Types
 ### CommentItem
@@ -63,7 +72,9 @@ interface CommentItem {
     color: number
   }
   membership: boolean
+  isVerified: boolean
   isOwner: boolean
+  isModerator: boolean
   timestamp: number
 }
 ```
