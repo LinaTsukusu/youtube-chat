@@ -96,11 +96,12 @@ export function parseData(data: Action): CommentItem | null {
     message = messageRenderer.headerSubtext.runs
   }
 
+  const authorNameText = messageRenderer.authorName?.simpleText ?? "";
   const ret: CommentItem = {
     id: messageRenderer.id,
     author: {
-      name: messageRenderer.authorName.simpleText,
-      thumbnail: parseThumbnailToImageItem(messageRenderer.authorPhoto.thumbnails, messageRenderer.authorName.simpleText),
+      name: authorNameText,
+      thumbnail: parseThumbnailToImageItem(messageRenderer.authorPhoto.thumbnails, authorNameText),
       channelId: messageRenderer.authorExternalChannelId,
     },
     message: parseMessages(message),
