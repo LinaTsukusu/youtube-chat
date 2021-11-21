@@ -46,7 +46,7 @@ export interface AuthorBadge {
 
 
 export interface MessageRendererBase {
-  authorName: {
+  authorName?: {
     simpleText: string
   }
   authorPhoto: {
