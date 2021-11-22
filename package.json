@@ -10,7 +10,8 @@
   "scripts": {
     "build": "tsc",
     "start": "NODE_ENV=production node dist",
-    "debug": "tsc && NODE_ENV=development node dist/debug.js"
+    "debug": "tsc && NODE_ENV=development node dist/debug.js",
+    "test": "jest"
   },
   "files": [
     "dist",
@@ -20,6 +21,7 @@
   ],
   "keywords": [
     "youtube",
+    "live",
     "chat"
   ],
   "devDependencies": {
