@@ -1,4 +1,4 @@
-import {LiveChat} from 'src/index'
+import {LiveChat} from "../src"
 
 
 describe('channelId', () => {

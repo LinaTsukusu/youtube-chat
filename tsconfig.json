@@ -13,9 +13,7 @@
     "declaration": true,
     "baseUrl": ".",
     "outDir": "dist",
-    "typeRoots": [
-      "src/@types"
-    ],
+    "outFile": "index.js",
     "types": [
       "node",
       "jest"
