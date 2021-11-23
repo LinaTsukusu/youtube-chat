@@ -1,7 +1,7 @@
 # youtube-chat
 > Fetch YouTube live chat without API
 
-***You will need to take full responsibility for your action***
+☢ ***You will need to take full responsibility for your action*** ☢
 
 ## Getting started
 1. Install
@@ -99,3 +99,9 @@ interface ImageItem {
   alt: string
 }
 ```
+
+## References
+- https://drroot.page/wp/?p=227
+- https://github.com/taizan-hokuto/pytchat
+
+Thank you!👍
