@@ -1,4 +1,8 @@
 # youtube-chat
+[![npm version](https://badge.fury.io/js/youtube-chat.svg)](https://badge.fury.io/js/youtube-chat)
+![npm](https://img.shields.io/npm/dt/youtube-chat)
+![NPM](https://img.shields.io/npm/l/youtube-chat)
+
 > Fetch YouTube live chat without API
 
 ☢ ***You will need to take full responsibility for your action*** ☢
