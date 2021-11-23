@@ -1,5 +1,5 @@
 # youtube-chat
-> Fetch Youtube live chat without API
+> Fetch YouTube live chat without API
 
 ***You will need to take full responsibility for your action***
 
@@ -19,7 +19,8 @@
 3. Create instance with ChannelID or LiveID
     ```javascript
     // If channelId is specified, liveId in the current stream is automatically acquired.
-    const liveChat = new LiveChat({channelId: 'UCxkOLgdNumvVIQqn5ps_bJA?'})
+    // Recommended
+    const liveChat = new LiveChat({channelId: 'UCxkOLgdNumvVIQqn5ps_bJA'})
     
     // Or specify LiveID in Stream manually.
     const liveChat = new LiveChat({liveId: 'bc5DoKBZRIo'})
@@ -28,34 +29,41 @@
     ```typescript
     // Emit at start of observation chat.
     // liveId: string
-    liveChat.on('start', (liveId) => {})
+    liveChat.on('start', (liveId) => {
+      /* Your code here! */
+    })
    
     // Emit at end of observation chat.
     // reason: string?
-    liveChat.on('end', (reason) => {})
+    liveChat.on('end', (reason) => {
+      /* Your code here! */
+    })
     
     // Emit at receive chat.
-    // comment: ChatItem
-    liveChat.on('comment', (comment) => {})
+    // chat: ChatItem
+    liveChat.on('chat', (chatItem) => {
+      /* Your code here! */
+    })
     
     // Emit when an error occurs
     // err: Error
-    liveChat.on('error', (err) => {})
+    liveChat.on('error', (err) => {
+      /* Your code here! */
+    })
     ```
 5. Start
     ```typescript
     // Start fetch loop
-    liveChat.start().then(ok => {
-      if (!ok) {
-        console.log("Failed to start, check emitted error")
-      }
-    })
+    const ok = await liveChat.start()
+    if (!ok) {
+      console.log("Failed to start, check emitted error")
+    }
     ```
 
 ## Types
-### CommentItem
+### ChatItem
 ```typescript
-interface CommentItem {
+interface ChatItem {
   id: string
   author: {
     name: string
@@ -71,7 +79,7 @@ interface CommentItem {
     amount: string
     color: number
   }
-  membership: boolean
+  isMembership: boolean
   isVerified: boolean
   isOwner: boolean
   isModerator: boolean
@@ -89,7 +97,5 @@ type MessageItem = { text: string } | ImageItem
 interface ImageItem {
   url: string
   alt: string
-  width: number
-  height: number
 }
 ```
