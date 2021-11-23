@@ -1,74 +1,61 @@
 import {
-  Action, LiveChatMembershipItemRenderer,
-  LiveChatPaidMessageRenderer, LiveChatPaidStickerRenderer,
+  Action,
+  GetLiveChatResponse,
+  LiveChatMembershipItemRenderer,
+  LiveChatPaidMessageRenderer,
+  LiveChatPaidStickerRenderer,
   LiveChatTextMessageRenderer,
-  MessageEmoji,
   MessageRun,
   Thumbnail,
-} from './yt-response'
+} from "./types/yt-response"
+import { ChatItem, ImageItem, MessageItem } from "./types/data"
 
-interface ImageItem {
-  url: string
-  alt: string
-  width: number
-  height: number
-}
 
-type MessageItem = { text: string } | ImageItem
-
-export interface CommentItem {
-  id: string
-  author: {
-    name: string
-    thumbnail?: ImageItem
-    channelId: string
-    badge?: {
-      thumbnail: ImageItem
-      label: string
-    }
+/** get_live_chat レスポンスを変換 */
+export function parseChatData(data: GetLiveChatResponse): [ChatItem[], string] {
+  let chatItems: ChatItem[] = []
+  if (data.continuationContents.liveChatContinuation.actions) {
+    chatItems = data.continuationContents.liveChatContinuation.actions.map(v => parseActionToChatItem(v))
+        .filter((v): v is NonNullable<ChatItem> => v !== null)
   }
-  message: MessageItem[]
-  superchat?: {
-    amount: string
-    color: number
-    sticker?: ImageItem
+
+  const continuationData = data.continuationContents.liveChatContinuation.continuations[0]
+  let continuation = ""
+  if (continuationData.invalidationContinuationData) {
+    continuation = continuationData.invalidationContinuationData.continuation
+  } else if (continuationData.timedContinuationData) {
+    continuation = continuationData.timedContinuationData.continuation
   }
-  membership: boolean
-  isVerified: boolean
-  isOwner: boolean
-  isModerator: boolean
-  timestamp: number
+
+  return [chatItems, continuation]
 }
 
 
+/** サムネイルオブジェクトをImageItemへ変換 */
 function parseThumbnailToImageItem(data: Thumbnail[], alt: string): ImageItem | undefined {
   const thumbnail = data.pop()
   if (thumbnail) {
     return {
       url: thumbnail.url,
-      width: thumbnail.width!,
-      height: thumbnail.height!,
       alt: alt,
     }
   }
   return
 }
 
-function parseEmojiToImageItem(data: MessageEmoji): ImageItem | undefined {
-  return parseThumbnailToImageItem(data.emoji.image.thumbnails, data.emoji.shortcuts.shift()!)
-}
-
+/** メッセージrun配列をMessageItem配列へ変換 */
 function parseMessages(runs: MessageRun[]): MessageItem[] {
   return runs.map((run: MessageRun) => {
-    if ('text' in run) {
+    if ("text" in run) {
       return run
     } else {
-      return parseEmojiToImageItem(run)!
+      return parseThumbnailToImageItem(run.emoji.image.thumbnails, run.emoji.shortcuts.shift()!)!
     }
   })
 }
 
-export function actionToRenderer(action: Action): LiveChatTextMessageRenderer | LiveChatPaidMessageRenderer | LiveChatPaidStickerRenderer | LiveChatMembershipItemRenderer | null {
+/** actionの種類を判別してRendererを返す */
+function rendererFromAction(action: Action): LiveChatTextMessageRenderer | LiveChatPaidMessageRenderer | LiveChatPaidStickerRenderer | LiveChatMembershipItemRenderer | null {
   if (!action.addChatItemAction) {
     return null
   }
@@ -79,27 +66,27 @@ export function actionToRenderer(action: Action): LiveChatTextMessageRenderer | 
     return item.liveChatPaidMessageRenderer
   } else if (item.liveChatPaidStickerRenderer) {
     return item.liveChatPaidStickerRenderer
-  } else {
-    return item.liveChatMembershipItemRenderer!
+  } else if (item.liveChatMembershipItemRenderer) {
+    return item.liveChatMembershipItemRenderer
   }
+  return null
 }
 
-export function usecToTime(usec: string): number {
-  return Math.floor(Number(usec) / 1000)
-}
-
-export function parseData(data: Action): CommentItem | null {
-  const messageRenderer = actionToRenderer(data)
-  if (messageRenderer === null) { return null }
+/** an action to a ChatItem */
+function parseActionToChatItem(data: Action): ChatItem | null {
+  const messageRenderer = rendererFromAction(data)
+  if (messageRenderer === null) {
+    return null
+  }
   let message: MessageRun[] = []
-  if ('message' in messageRenderer) {
+  if ("message" in messageRenderer) {
     message = messageRenderer.message.runs
-  } else if ('headerSubtext' in messageRenderer) {
+  } else if ("headerSubtext" in messageRenderer) {
     message = messageRenderer.headerSubtext.runs
   }
 
-  const authorNameText = messageRenderer.authorName?.simpleText ?? "";
-  const ret: CommentItem = {
+  const authorNameText = messageRenderer.authorName?.simpleText ?? ""
+  const ret: ChatItem = {
     id: messageRenderer.id,
     author: {
       name: authorNameText,
@@ -107,11 +94,11 @@ export function parseData(data: Action): CommentItem | null {
       channelId: messageRenderer.authorExternalChannelId,
     },
     message: parseMessages(message),
-    membership: Boolean('headerSubtext' in messageRenderer),
+    isMembership: false,
     isOwner: false,
     isVerified: false,
     isModerator: false,
-    timestamp: usecToTime(messageRenderer.timestampUsec),
+    timestamp: new Date(Number(messageRenderer.timestampUsec) / 1000),
   }
 
   if (messageRenderer.authorBadges) {
@@ -122,24 +109,31 @@ export function parseData(data: Action): CommentItem | null {
           thumbnail: parseThumbnailToImageItem(badge.customThumbnail.thumbnails, badge.tooltip)!,
           label: badge.tooltip,
         }
-      } else{
-        switch (badge.icon?.iconType ) {
-          case "OWNER": ret.isOwner = true; break;
-          case "VERIFIED": ret.isVerified = true; break;
-          case "MODERATOR": ret.isModerator = true; break;
+        ret.isMembership = true
+      } else {
+        switch (badge.icon?.iconType) {
+          case "OWNER":
+            ret.isOwner = true
+            break
+          case "VERIFIED":
+            ret.isVerified = true
+            break
+          case "MODERATOR":
+            ret.isModerator = true
+            break
         }
       }
     }
   }
 
-  if ('sticker' in messageRenderer) {
+  if ("sticker" in messageRenderer) {
     ret.superchat = {
       amount: messageRenderer.purchaseAmountText.simpleText,
       color: messageRenderer.backgroundColor,
       sticker: parseThumbnailToImageItem(
-        messageRenderer.sticker.thumbnails, messageRenderer.sticker.accessibility.accessibilityData.label)
+          messageRenderer.sticker.thumbnails, messageRenderer.sticker.accessibility.accessibilityData.label),
     }
-  } else if ('purchaseAmountText' in messageRenderer) {
+  } else if ("purchaseAmountText" in messageRenderer) {
     ret.superchat = {
       amount: messageRenderer.purchaseAmountText.simpleText,
       color: messageRenderer.bodyBackgroundColor,

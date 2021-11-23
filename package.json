@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc",
     "start": "NODE_ENV=production node dist",
-    "debug": "ts-node src/debug.ts",
+    "debug": "node --require ts-node/register src/debug.ts",
     "test": "jest"
   },
   "files": [

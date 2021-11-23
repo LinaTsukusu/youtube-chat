@@ -35,7 +35,7 @@
     liveChat.on('end', (reason) => {})
     
     // Emit at receive chat.
-    // comment: CommentItem
+    // comment: ChatItem
     liveChat.on('comment', (comment) => {})
     
     // Emit when an error occurs

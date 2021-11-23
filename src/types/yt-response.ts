@@ -1,3 +1,42 @@
+/** APIレスポンスの型 */
+
+
+/** get_live_chat Response */
+export interface GetLiveChatResponse {
+  responseContext: any
+  trackingParams?: string
+  continuationContents: {
+    liveChatContinuation: {
+      continuations: Continuation[]
+      actions: Action[]
+    }
+  }
+}
+
+export interface Continuation {
+  invalidationContinuationData?: {
+    invalidationId: {
+      objectSource: number
+      objectId: string
+      topic: string
+      subscribeToGcmTopics: boolean
+      protoCreationTimestampMs: string
+    }
+    timeoutMs: number
+    continuation: string
+  }
+  timedContinuationData?: {
+    timeoutMs: number
+    continuation: string
+    clickTrackingParams: string
+  }
+}
+
+export interface Action {
+  addChatItemAction?: AddChatItemAction
+  addLiveChatTickerItemAction?: any
+}
+
 export interface Thumbnail {
   url: string
   width?: number
@@ -13,6 +52,7 @@ export interface MessageEmoji {
     emojiId: string
     shortcuts: string[]
     searchTerms: string[]
+    supportsSkinTone: boolean
     image: {
       thumbnails: Thumbnail[]
       accessibility: {
@@ -21,6 +61,7 @@ export interface MessageEmoji {
         }
       }
     }
+    variantIds: string[]
     isCustomEmoji: true
   }
 }
@@ -118,17 +159,13 @@ export interface LiveChatMembershipItemRenderer extends MessageRendererBase {
   authorBadges: AuthorBadge[]
 }
 
-export interface ActionItem  {
+export interface AddChatItemAction {
   item: {
     liveChatTextMessageRenderer?: LiveChatTextMessageRenderer
     liveChatPaidMessageRenderer?: LiveChatPaidMessageRenderer
     liveChatMembershipItemRenderer?: LiveChatMembershipItemRenderer
     liveChatPaidStickerRenderer?: LiveChatPaidStickerRenderer
+    liveChatViewerEngagementMessageRenderer?: any
   },
   clientId: string
-}
-
-export interface Action {
-  addChatItemAction?: ActionItem
-  addLiveChatTickerItemAction?: any
 }

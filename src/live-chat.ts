@@ -1,91 +1,126 @@
-import {EventEmitter} from 'events'
-import axios from 'axios'
-import {actionToRenderer, CommentItem, parseData, usecToTime} from './parser'
-import {Action} from './yt-response'
+import { EventEmitter } from "events"
+import axios from "axios"
+import { parseChatData } from "./parser"
+import { ChatItem } from "./types/data"
+import { GetLiveChatResponse } from "./types/yt-response"
 
 
 /**
  * YouTubeライブチャット取得イベント
  */
 export class LiveChat extends EventEmitter {
-  private static readonly headers = {'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36'}
-  public readonly channelId?: string
-  public liveId?: string
-  private prevTime = Date.now()
-  private observer?: NodeJS.Timeout
+  readonly channelId?: string
+  liveId?: string
+  #observer?: NodeJS.Timer
+  #continuation?: string
+  #apiKey?: string
+  #clientVersion?: string
+  #visitorData?: string
 
-  constructor(options: {channelId: string} | {liveId: string}, private interval = 1000) {
+  constructor(options: { channelId: string } | { liveId: string }, private interval = 1000) {
     super()
-    if ('channelId' in options) {
+    if ("channelId" in options) {
       this.channelId = options.channelId
-    } else if ('liveId' in options) {
+    } else if ("liveId" in options) {
       this.liveId = options.liveId
     } else {
       throw TypeError("Required channelId or liveId.")
     }
   }
 
-  public async start(): Promise<boolean> {
-    if (this.channelId) {
-      const liveRes = await axios.get(`https://www.youtube.com/channel/${this.channelId}/live`, {headers: LiveChat.headers})
-      if (liveRes.data.match(/LIVE_STREAM_OFFLINE/)) {
-        this.emit('error', new Error("Live stream offline"))
-        return false
-      }
-      this.liveId = liveRes.data.match(/"watchEndpoint":{"videoId":"(\S*?)"}/)![1] as string
-    }
+  async start(): Promise<boolean> {
+    const livePage = await this.#fetchLivePage()
+    this.#getOptionsFromLivePage(livePage)
 
     if (!this.liveId) {
-      this.emit('error', new Error('Live stream not found'))
+      this.emit("error", new Error("Live stream not found"))
       return false
     }
 
-    this.observer = setInterval(() => this.fetchChat(), this.interval)
+    this.#observer = setInterval(() => this.#execute(), this.interval)
 
-    this.emit('start', this.liveId)
+    this.emit("start", this.liveId)
     return true
   }
 
-  public stop(reason?: string) {
-    if (this.observer) {
-      clearInterval(this.observer)
-      this.emit('end', reason)
+  stop(reason?: string) {
+    if (this.#observer) {
+      clearInterval(this.#observer)
+      this.emit("end", reason)
     }
   }
 
-  private async fetchChat() {
-    const res = await axios.get(`https://www.youtube.com/live_chat?v=${this.liveId}&pbj=1`, {headers: LiveChat.headers})
-    if (res.data[1].response.contents.messageRenderer) {
-      this.stop("Live stream is finished")
-      return
-    }
-
-    const items = res.data[1].response.contents.liveChatRenderer.actions.slice(0, -1)
-      .filter((v: Action) => {
-        const messageRenderer = actionToRenderer(v)
-        if (messageRenderer !== null) {
-          if (messageRenderer) {
-            return usecToTime(messageRenderer.timestampUsec) > this.prevTime
-          }
-        }
-        return false
-      })
-      .map((v: Action) => parseData(v))
-
-    items.forEach((v: CommentItem) => {
-      this.emit('comment', v)
-    })
-
-    if (items.length > 0) {
-      this.prevTime = items[items.length - 1].timestamp
-    }
-  }
-
-  public on(event: 'comment', listener: (comment: CommentItem) => void): this
-  public on(event: 'start', listener: (liveId: string) => void): this
-  public on(event: 'end', listener: (reason?: string) => void): this
-  public on(event: 'error', listener: (err: Error) => void): this
-  public on(event: string | symbol, listener: (...args: any[]) => void): this {
+  on(event: "chat", listener: (chatItem: ChatItem) => void): this
+  on(event: "start", listener: (liveId: string) => void): this
+  on(event: "end", listener: (reason?: string) => void): this
+  on(event: "error", listener: (err: Error) => void): this
+  on(event: string | symbol, listener: (...args: any[]) => void): this {
     return super.on(event, listener)
+  }
+
+  async #execute() {
+    const data = await this.#fetchChat()
+    const [chatItems, continuation] = parseChatData(data)
+    chatItems.forEach(chatItem => this.emit("chat", chatItem))
+
+    if (continuation) {
+      this.#continuation = continuation
+    }
+  }
+
+  async #fetchChat(): Promise<GetLiveChatResponse> {
+    const url = `https://www.youtube.com/youtubei/v1/live_chat/get_live_chat?key=${this.#apiKey}`
+
+    return (await axios.post(url, {
+      context: {
+        client: {
+          clientVersion: this.#clientVersion,
+          visitorData: this.#visitorData,
+          clientName: "WEB",
+        },
+      },
+      continuation: this.#continuation,
+    })).data
+  }
+
+  async #fetchLivePage(): Promise<string> {
+    const url = this.channelId ?
+        `https://www.youtube.com/channel/${this.channelId}/live` :
+        `https://www.youtube.com/watch?v=${this.liveId}`
+
+    return (await axios.get(url)).data
+  }
+
+  #getOptionsFromLivePage(data: string) {
+    if (!this.liveId) {
+      const idResult = data.match(/<link rel="canonical" href="https:\/\/www.youtube.com\/watch\?v=(.+?)">/)
+      if (idResult) {
+        this.liveId = idResult[1]
+      } else {
+        // Maybe it is an replay
+        this.liveId = ""
+        return
+      }
+    }
+
+    const keyResult = data.match(/['"]INNERTUBE_API_KEY['"]:\s*['"](.+?)['"]/)
+    if (keyResult) {
+      this.#apiKey = keyResult[1]
+    }
+
+    const verResult = data.match(/['"]clientVersion['"]:\s*['"]([\d.]+?)['"]/)
+    if (verResult) {
+      this.#clientVersion = verResult[1]
+    }
+
+    const visitorResult = data.match(/['"]VISITOR_DATA['"]:\s*['"](.+?)['"]/)
+    if (visitorResult) {
+      this.#visitorData = visitorResult[1]
+    }
+
+    const continuationResult = data.match(/['"]continuation['"]:\s*['"](.+?)['"]/)
+    if (continuationResult) {
+      this.#continuation = continuationResult[1]
+    }
   }
 }
