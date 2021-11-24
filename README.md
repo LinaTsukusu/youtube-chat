@@ -67,27 +67,27 @@
 ## Types
 ### ChatItem
 ```typescript
-interface ChatItem {
-  id: string
-  author: {
-    name: string
-    thumbnail?: ImageItem
-    channelId: string
-    badge?: {
-      thumbnail: ImageItem
-      label: string
-    }
-  }
-  message: MessageItem[]
-  superchat?: {
-    amount: string
-    color: number
-  }
-  isMembership: boolean
-  isVerified: boolean
-  isOwner: boolean
-  isModerator: boolean
-  timestamp: number
+export interface ChatItem {
+   author: {
+      name: string
+      thumbnail?: ImageItem
+      channelId: string
+      badge?: {
+         thumbnail: ImageItem
+         label: string
+      }
+   }
+   message: MessageItem[]
+   superchat?: {
+      amount: string
+      color: string
+      sticker?: ImageItem
+   }
+   isMembership: boolean
+   isVerified: boolean
+   isOwner: boolean
+   isModerator: boolean
+   timestamp: Date
 }
 ```
 

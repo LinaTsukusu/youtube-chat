@@ -15,7 +15,6 @@ export class LiveChat extends EventEmitter {
   #continuation?: string
   #apiKey?: string
   #clientVersion?: string
-  #visitorData?: string
 
   constructor(options: { channelId: string } | { liveId: string }, private interval = 1000) {
     super()
@@ -29,18 +28,18 @@ export class LiveChat extends EventEmitter {
   }
 
   async start(): Promise<boolean> {
-    const livePage = await this.#fetchLivePage()
-    this.#getOptionsFromLivePage(livePage)
+    try {
+      const livePage = await this.#fetchLivePage()
+      this.#getOptionsFromLivePage(livePage)
 
-    if (!this.liveId) {
-      this.emit("error", new Error("Live stream not found"))
+      this.#observer = setInterval(() => this.#execute(), this.interval)
+
+      this.emit("start", this.liveId)
+      return true
+    } catch (err) {
+      this.emit("error", err)
       return false
     }
-
-    this.#observer = setInterval(() => this.#execute(), this.interval)
-
-    this.emit("start", this.liveId)
-    return true
   }
 
   stop(reason?: string) {
@@ -59,12 +58,16 @@ export class LiveChat extends EventEmitter {
   }
 
   async #execute() {
-    const data = await this.#fetchChat()
-    const [chatItems, continuation] = parseChatData(data)
-    chatItems.forEach(chatItem => this.emit("chat", chatItem))
+    try {
+      const data = await this.#fetchChat()
+      const [chatItems, continuation] = parseChatData(data)
+      chatItems.forEach(chatItem => this.emit("chat", chatItem))
 
-    if (continuation) {
-      this.#continuation = continuation
+      if (continuation) {
+        this.#continuation = continuation
+      }
+    } catch (err) {
+      this.emit("error", err)
     }
   }
 
@@ -75,7 +78,6 @@ export class LiveChat extends EventEmitter {
       context: {
         client: {
           clientVersion: this.#clientVersion,
-          visitorData: this.#visitorData,
           clientName: "WEB",
         },
       },
@@ -98,29 +100,29 @@ export class LiveChat extends EventEmitter {
         this.liveId = idResult[1]
       } else {
         // Maybe it is an replay
-        this.liveId = ""
-        return
+        throw new Error("Live ID was not found")
       }
     }
 
     const keyResult = data.match(/['"]INNERTUBE_API_KEY['"]:\s*['"](.+?)['"]/)
     if (keyResult) {
       this.#apiKey = keyResult[1]
+    } else {
+      throw new Error("API Key was not found")
     }
 
     const verResult = data.match(/['"]clientVersion['"]:\s*['"]([\d.]+?)['"]/)
     if (verResult) {
       this.#clientVersion = verResult[1]
-    }
-
-    const visitorResult = data.match(/['"]VISITOR_DATA['"]:\s*['"](.+?)['"]/)
-    if (visitorResult) {
-      this.#visitorData = visitorResult[1]
+    } else {
+      throw new Error("Client Version was not found")
     }
 
     const continuationResult = data.match(/['"]continuation['"]:\s*['"](.+?)['"]/)
     if (continuationResult) {
       this.#continuation = continuationResult[1]
+    } else {
+      throw new Error("Continuation was not found")
     }
   }
 }
