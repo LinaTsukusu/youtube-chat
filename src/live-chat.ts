@@ -1,22 +1,31 @@
 import { EventEmitter } from "events"
+import TypedEmitter  from "typed-emitter"
 import axios from "axios"
 import { parseChatData } from "./parser"
 import { ChatItem } from "./types/data"
 import { GetLiveChatResponse } from "./types/yt-response"
 
 
+interface LiveChatEvents {
+  start: (liveId: string) => void
+  end: (reason?: string) => void
+  chat: (chatItem: ChatItem) => void
+  error: (err: any) => void
+}
+
 /**
  * YouTubeライブチャット取得イベント
  */
-export class LiveChat extends EventEmitter {
+export class LiveChat extends (EventEmitter as new() => TypedEmitter<LiveChatEvents>) {
   readonly channelId?: string
   liveId?: string
   #observer?: NodeJS.Timer
   #continuation?: string
   #apiKey?: string
   #clientVersion?: string
+  readonly #interval: number = 1000
 
-  constructor(options: { channelId: string } | { liveId: string }, private interval = 1000) {
+  constructor(options: { channelId: string } | { liveId: string }, interval = 1000) {
     super()
     if ("channelId" in options) {
       this.channelId = options.channelId
@@ -25,6 +34,7 @@ export class LiveChat extends EventEmitter {
     } else {
       throw TypeError("Required channelId or liveId.")
     }
+    this.#interval = interval
   }
 
   async start(): Promise<boolean> {
@@ -32,9 +42,9 @@ export class LiveChat extends EventEmitter {
       const livePage = await this.#fetchLivePage()
       this.#getOptionsFromLivePage(livePage)
 
-      this.#observer = setInterval(() => this.#execute(), this.interval)
+      this.#observer = setInterval(() => this.#execute(), this.#interval)
 
-      this.emit("start", this.liveId)
+      this.emit("start", this.liveId!)
       return true
     } catch (err) {
       this.emit("error", err)
@@ -47,14 +57,6 @@ export class LiveChat extends EventEmitter {
       clearInterval(this.#observer)
       this.emit("end", reason)
     }
-  }
-
-  on(event: "chat", listener: (chatItem: ChatItem) => void): this
-  on(event: "start", listener: (liveId: string) => void): this
-  on(event: "end", listener: (reason?: string) => void): this
-  on(event: "error", listener: (err: Error) => void): this
-  on(event: string | symbol, listener: (...args: any[]) => void): this {
-    return super.on(event, listener)
   }
 
   async #execute() {
@@ -99,8 +101,7 @@ export class LiveChat extends EventEmitter {
       if (idResult) {
         this.liveId = idResult[1]
       } else {
-        // Maybe it is an replay
-        throw new Error("Live ID was not found")
+        throw new Error("Live Stream was not found")
       }
     }
 

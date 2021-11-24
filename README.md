@@ -9,7 +9,7 @@
 
 ## Getting started
 1. Install
-    - `npm i youtube-chat`
+    - `npm i --save youtube-chat`
     - `yarn add youtube-chat`
 2. Import
     - Javascript
@@ -50,7 +50,7 @@
     })
     
     // Emit when an error occurs
-    // err: Error
+    // err: Error or any
     liveChat.on('error', (err) => {
       /* Your code here! */
     })
