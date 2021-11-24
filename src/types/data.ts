@@ -2,7 +2,6 @@
 
 /** 取得したチャット詳細 */
 export interface ChatItem {
-  id: string
   author: {
     name: string
     thumbnail?: ImageItem
@@ -15,7 +14,7 @@ export interface ChatItem {
   message: MessageItem[]
   superchat?: {
     amount: string
-    color: number
+    color: string
     sticker?: ImageItem
   }
   isMembership: boolean
@@ -26,10 +25,16 @@ export interface ChatItem {
 }
 
 /** チャットメッセージの文字列or絵文字 */
-export type MessageItem = { text: string } | ImageItem
+export type MessageItem = { text: string } | EmojiItem
 
-/** 画像(絵文字) */
+/** 画像 */
 export interface ImageItem {
   url: string
   alt: string
+}
+
+/** Emoji */
+export interface EmojiItem extends ImageItem {
+  emojiText: string
+  isCustomEmoji: boolean
 }

@@ -43,13 +43,26 @@ function parseThumbnailToImageItem(data: Thumbnail[], alt: string): ImageItem | 
   return
 }
 
+function convertColorToHex6(colorNum: number) {
+  return `#${colorNum.toString(16).slice(2).toLocaleUpperCase()}`
+}
+
 /** メッセージrun配列をMessageItem配列へ変換 */
 function parseMessages(runs: MessageRun[]): MessageItem[] {
-  return runs.map((run: MessageRun) => {
+  return runs.map((run: MessageRun): MessageItem => {
     if ("text" in run) {
       return run
     } else {
-      return parseThumbnailToImageItem(run.emoji.image.thumbnails, run.emoji.shortcuts.shift()!)!
+      // Emoji
+      const thumbnail = run.emoji.image.thumbnails.pop()
+      const isCustomEmoji = Boolean(run.emoji.isCustomEmoji)
+      const shortcut = run.emoji.shortcuts[0]
+      return {
+        url: thumbnail!.url,
+        alt: shortcut,
+        isCustomEmoji: isCustomEmoji,
+        emojiText: isCustomEmoji ? shortcut: run.emoji.emojiId
+      }
     }
   })
 }
@@ -87,7 +100,6 @@ function parseActionToChatItem(data: Action): ChatItem | null {
 
   const authorNameText = messageRenderer.authorName?.simpleText ?? ""
   const ret: ChatItem = {
-    id: messageRenderer.id,
     author: {
       name: authorNameText,
       thumbnail: parseThumbnailToImageItem(messageRenderer.authorPhoto.thumbnails, authorNameText),
@@ -129,14 +141,14 @@ function parseActionToChatItem(data: Action): ChatItem | null {
   if ("sticker" in messageRenderer) {
     ret.superchat = {
       amount: messageRenderer.purchaseAmountText.simpleText,
-      color: messageRenderer.backgroundColor,
+      color: convertColorToHex6(messageRenderer.backgroundColor),
       sticker: parseThumbnailToImageItem(
           messageRenderer.sticker.thumbnails, messageRenderer.sticker.accessibility.accessibilityData.label),
     }
   } else if ("purchaseAmountText" in messageRenderer) {
     ret.superchat = {
       amount: messageRenderer.purchaseAmountText.simpleText,
-      color: messageRenderer.bodyBackgroundColor,
+      color: convertColorToHex6(messageRenderer.bodyBackgroundColor),
     }
   }
 

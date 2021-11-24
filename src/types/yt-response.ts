@@ -62,7 +62,7 @@ export interface MessageEmoji {
       }
     }
     variantIds: string[]
-    isCustomEmoji: true
+    isCustomEmoji?: true
   }
 }
 
