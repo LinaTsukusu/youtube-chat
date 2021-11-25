@@ -5,3 +5,4 @@ debug.ts
 *error.log
 testrun.ts
 package-lock.json
+*.map
