@@ -1,9 +1,8 @@
 /** APIレスポンスの型 */
 
-
 /** get_live_chat Response */
 export interface GetLiveChatResponse {
-  responseContext: any
+  responseContext: object
   trackingParams?: string
   continuationContents: {
     liveChatContinuation: {
@@ -34,7 +33,7 @@ export interface Continuation {
 
 export interface Action {
   addChatItemAction?: AddChatItemAction
-  addLiveChatTickerItemAction?: any
+  addLiveChatTickerItemAction?: object
 }
 
 export interface Thumbnail {
@@ -72,7 +71,7 @@ export interface AuthorBadge {
   liveChatAuthorBadgeRenderer: {
     customThumbnail?: {
       thumbnails: Thumbnail[]
-    },
+    }
     icon?: {
       iconType: string
     }
@@ -84,7 +83,6 @@ export interface AuthorBadge {
     }
   }
 }
-
 
 export interface MessageRendererBase {
   authorName?: {
@@ -165,7 +163,7 @@ export interface AddChatItemAction {
     liveChatPaidMessageRenderer?: LiveChatPaidMessageRenderer
     liveChatMembershipItemRenderer?: LiveChatMembershipItemRenderer
     liveChatPaidStickerRenderer?: LiveChatPaidStickerRenderer
-    liveChatViewerEngagementMessageRenderer?: any
-  },
+    liveChatViewerEngagementMessageRenderer?: object
+  }
   clientId: string
 }

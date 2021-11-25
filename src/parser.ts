@@ -11,12 +11,54 @@ import {
 import { ChatItem, ImageItem, MessageItem } from "./types/data"
 
 
+export function getOptionsFromLivePage(data: string) {
+  let liveId: string
+  const idResult = data.match(/<link rel="canonical" href="https:\/\/www.youtube.com\/watch\?v=(.+?)">/)
+  if (idResult) {
+    liveId = idResult[1]
+  } else {
+    throw new Error("Live Stream was not found")
+  }
+
+  let apiKey: string
+  const keyResult = data.match(/['"]INNERTUBE_API_KEY['"]:\s*['"](.+?)['"]/)
+  if (keyResult) {
+    apiKey = keyResult[1]
+  } else {
+    throw new Error("API Key was not found")
+  }
+
+  let clientVersion: string
+  const verResult = data.match(/['"]clientVersion['"]:\s*['"]([\d.]+?)['"]/)
+  if (verResult) {
+    clientVersion = verResult[1]
+  } else {
+    throw new Error("Client Version was not found")
+  }
+
+  let continuation: string
+  const continuationResult = data.match(/['"]continuation['"]:\s*['"](.+?)['"]/)
+  if (continuationResult) {
+    continuation = continuationResult[1]
+  } else {
+    throw new Error("Continuation was not found")
+  }
+
+  return {
+    liveId,
+    apiKey,
+    clientVersion,
+    continuation,
+  }
+}
+
 /** get_live_chat レスポンスを変換 */
 export function parseChatData(data: GetLiveChatResponse): [ChatItem[], string] {
   let chatItems: ChatItem[] = []
   if (data.continuationContents.liveChatContinuation.actions) {
-    chatItems = data.continuationContents.liveChatContinuation.actions.map(v => parseActionToChatItem(v))
-        .filter((v): v is NonNullable<ChatItem> => v !== null)
+    chatItems = data.continuationContents.liveChatContinuation.actions
+      .map((v) => parseActionToChatItem(v))
+      .filter((v): v is NonNullable<ChatItem> => v !== null)
   }
 
   const continuationData = data.continuationContents.liveChatContinuation.continuations[0]
@@ -30,17 +72,20 @@ export function parseChatData(data: GetLiveChatResponse): [ChatItem[], string] {
   return [chatItems, continuation]
 }
 
-
 /** サムネイルオブジェクトをImageItemへ変換 */
-function parseThumbnailToImageItem(data: Thumbnail[], alt: string): ImageItem | undefined {
+function parseThumbnailToImageItem(data: Thumbnail[], alt: string): ImageItem {
   const thumbnail = data.pop()
   if (thumbnail) {
     return {
       url: thumbnail.url,
       alt: alt,
     }
+  } else {
+    return {
+      url: "",
+      alt: "",
+    }
   }
-  return
 }
 
 function convertColorToHex6(colorNum: number) {
@@ -54,21 +99,28 @@ function parseMessages(runs: MessageRun[]): MessageItem[] {
       return run
     } else {
       // Emoji
-      const thumbnail = run.emoji.image.thumbnails.pop()
+      const thumbnail = run.emoji.image.thumbnails.shift()
       const isCustomEmoji = Boolean(run.emoji.isCustomEmoji)
       const shortcut = run.emoji.shortcuts[0]
       return {
-        url: thumbnail!.url,
+        url: thumbnail ? thumbnail.url : "",
         alt: shortcut,
         isCustomEmoji: isCustomEmoji,
-        emojiText: isCustomEmoji ? shortcut: run.emoji.emojiId
+        emojiText: isCustomEmoji ? shortcut : run.emoji.emojiId,
       }
     }
   })
 }
 
 /** actionの種類を判別してRendererを返す */
-function rendererFromAction(action: Action): LiveChatTextMessageRenderer | LiveChatPaidMessageRenderer | LiveChatPaidStickerRenderer | LiveChatMembershipItemRenderer | null {
+function rendererFromAction(
+  action: Action
+):
+  | LiveChatTextMessageRenderer
+  | LiveChatPaidMessageRenderer
+  | LiveChatPaidStickerRenderer
+  | LiveChatMembershipItemRenderer
+  | null {
   if (!action.addChatItemAction) {
     return null
   }
@@ -118,7 +170,7 @@ function parseActionToChatItem(data: Action): ChatItem | null {
       const badge = entry.liveChatAuthorBadgeRenderer
       if (badge.customThumbnail) {
         ret.author.badge = {
-          thumbnail: parseThumbnailToImageItem(badge.customThumbnail.thumbnails, badge.tooltip)!,
+          thumbnail: parseThumbnailToImageItem(badge.customThumbnail.thumbnails, badge.tooltip),
           label: badge.tooltip,
         }
         ret.isMembership = true
@@ -143,7 +195,9 @@ function parseActionToChatItem(data: Action): ChatItem | null {
       amount: messageRenderer.purchaseAmountText.simpleText,
       color: convertColorToHex6(messageRenderer.backgroundColor),
       sticker: parseThumbnailToImageItem(
-          messageRenderer.sticker.thumbnails, messageRenderer.sticker.accessibility.accessibilityData.label),
+        messageRenderer.sticker.thumbnails,
+        messageRenderer.sticker.accessibility.accessibilityData.label
+      ),
     }
   } else if ("purchaseAmountText" in messageRenderer) {
     ret.superchat = {
