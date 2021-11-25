@@ -9,7 +9,6 @@
   "private": false,
   "scripts": {
     "build": "tsc",
-    "prebuild": "npm run fmt && npm run test",
     "debug": "node --require ts-node/register src/debug.ts",
     "test": "jest",
     "fmt": "prettier --write \"{src,test}/**/*.ts\" && eslint --fix \"src/**/*.ts\" \"test/**/*.ts\""
