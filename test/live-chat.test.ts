@@ -1,6 +1,7 @@
 import {LiveChat} from "../src"
 import axios from "axios"
 import { readFileSync } from "fs"
+import { ChatItem } from "../src/types/data"
 
 
 jest.mock("axios")
@@ -59,14 +60,34 @@ describe('LiveChat', () => {
     spy.mockRestore()
   })
 
-  test("On chat", async () => {
+  test("On chat", (done) => {
     const liveChat = new LiveChat({channelId: "channelId"})
-    const onChat = jest.fn()
+    const onChat = jest.fn().mockImplementation((chatItem: ChatItem) => {
+      expect(chatItem).toStrictEqual({
+        author: {
+          name: "authorName",
+          thumbnail: {
+            url: "https://author.thumbnail.url",
+            alt: "authorName",
+          },
+          channelId: "channelId",
+        },
+        message: [{
+          text: "Hello, World!",
+        }],
+        isMembership: false,
+        isVerified: false,
+        isOwner: false,
+        isModerator: false,
+        timestamp: new Date("2021-01-01")
+      })
+      done()
+    })
     liveChat.on("chat", onChat)
-    await liveChat.start()
-    jest.advanceTimersByTime(1000)
-    expect(onChat).toHaveBeenCalled()
-    jest.clearAllTimers()
+    liveChat.start().then(() => {
+      jest.advanceTimersToNextTimer()
+      jest.clearAllTimers()
+    })
   })
 
   test("On error", async () => {
