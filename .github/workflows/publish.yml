@@ -24,7 +24,9 @@ jobs:
         run: yarn install
       - name: Run unit test
         run: yarn run test
+      - name: Build
+        run: yarn run build
       - name: Publish npm module
-        run: npm publish
+        run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
