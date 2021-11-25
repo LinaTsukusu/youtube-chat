@@ -12,7 +12,8 @@
     "debug": "node --require ts-node/register src/debug.ts",
     "test": "jest",
     "lint": "eslint \"src/**/*.ts\" \"test/**/*.ts\"",
-    "fmt": "prettier --write \"{src,test}/**/*.ts\" && eslint --fix \"src/**/*.ts\" \"test/**/*.ts\""
+    "format": "prettier --write \"{src,test}/**/*.ts\"",
+    "format-check": "prettier --check \"{src,test}/**/*.ts\""
   },
   "files": [
     "dist",
@@ -32,7 +33,6 @@
     "@typescript-eslint/parser": "^5.4.0",
     "eslint": "^8.3.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-jest": "^25.3.0",
     "jest": "^27.3.1",
     "prettier": "^2.4.1",

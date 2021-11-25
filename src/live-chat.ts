@@ -5,7 +5,6 @@ import { getOptionsFromLivePage, parseChatData } from "./parser"
 import { ChatItem } from "./types/data"
 import { GetLiveChatResponse } from "./types/yt-response"
 
-
 interface LiveChatEvents {
   start: (liveId: string) => void
   end: (reason?: string) => void

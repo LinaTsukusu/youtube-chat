@@ -3,7 +3,6 @@ import axios from "axios"
 import { readFileSync } from "fs"
 import { ChatItem } from "../src/types/data"
 
-
 jest.mock("axios")
 const mockGet = axios.get as jest.Mock
 mockGet.mockResolvedValue({ data: readFileSync(__dirname + "/testdata/live-page.html").toString() })

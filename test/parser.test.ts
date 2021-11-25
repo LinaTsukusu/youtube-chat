@@ -1,7 +1,6 @@
 import { parseChatData } from "../src/parser"
 import { readFileSync } from "fs"
 
-
 describe("Parser", () => {
   test("Normal", () => {
     const res = JSON.parse(readFileSync(__dirname + "/testdata/get_live_chat.normal.json").toString())
