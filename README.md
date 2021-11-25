@@ -2,6 +2,7 @@
 [![npm version](https://badge.fury.io/js/youtube-chat.svg)](https://badge.fury.io/js/youtube-chat)
 ![npm](https://img.shields.io/npm/dt/youtube-chat)
 ![NPM](https://img.shields.io/npm/l/youtube-chat)
+[![CI](https://github.com/LinaTsukusu/youtube-chat/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/LinaTsukusu/youtube-chat/actions/workflows/ci.yml)
 
 > Fetch YouTube live chat without API
 
@@ -9,7 +10,7 @@
 
 ## Getting started
 1. Install
-    - `npm i --save youtube-chat`
+    - `npm i youtube-chat`
     - `yarn add youtube-chat`
 2. Import
     - Javascript
@@ -63,11 +64,15 @@
       console.log("Failed to start, check emitted error")
     }
     ```
+6. Stop loop
+   ```typescript
+   livechat.stop()
+   ```
 
 ## Types
 ### ChatItem
 ```typescript
-export interface ChatItem {
+interface ChatItem {
    author: {
       name: string
       thumbnail?: ImageItem
@@ -92,8 +97,9 @@ export interface ChatItem {
 ```
 
 ### MessageItem
+
 ```typescript
-type MessageItem = { text: string } | ImageItem
+type MessageItem = { text: string } | EmojiItem
 ```
 
 ### ImageItem
@@ -101,6 +107,14 @@ type MessageItem = { text: string } | ImageItem
 interface ImageItem {
   url: string
   alt: string
+}
+```
+
+### EmojiItem
+```typescript
+interface EmojiItem extends ImageItem {
+  emojiText: string
+  isCustomEmoji: boolean
 }
 ```
 
