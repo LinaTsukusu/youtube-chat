@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+          cache: yarn
+      - name: Install modules
+        run: yarn install
+      - name: Check format
+        run: yarn run format-check
+      - name: Run Eslint
+        run: yarn run lint
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+          cache: yarn
+      - name: Install modules
+        run: yarn install
+      - name: Run unit test
+        run: yarn run test

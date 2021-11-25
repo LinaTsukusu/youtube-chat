@@ -1,0 +1,30 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish:
+    name: Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+          cache: yarn
+          registry-url: 'https://registry.npmjs.org'
+      - name: Check can publish
+        run: npx can-npm-publish --verbose
+      - name: Install modules
+        run: yarn install
+      - name: Run unit test
+        run: yarn run test
+      - name: Publish npm module
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
