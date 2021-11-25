@@ -1,3 +1,41 @@
+/** APIレスポンスの型 */
+
+/** get_live_chat Response */
+export interface GetLiveChatResponse {
+  responseContext: object
+  trackingParams?: string
+  continuationContents: {
+    liveChatContinuation: {
+      continuations: Continuation[]
+      actions: Action[]
+    }
+  }
+}
+
+export interface Continuation {
+  invalidationContinuationData?: {
+    invalidationId: {
+      objectSource: number
+      objectId: string
+      topic: string
+      subscribeToGcmTopics: boolean
+      protoCreationTimestampMs: string
+    }
+    timeoutMs: number
+    continuation: string
+  }
+  timedContinuationData?: {
+    timeoutMs: number
+    continuation: string
+    clickTrackingParams: string
+  }
+}
+
+export interface Action {
+  addChatItemAction?: AddChatItemAction
+  addLiveChatTickerItemAction?: object
+}
+
 export interface Thumbnail {
   url: string
   width?: number
@@ -13,6 +51,7 @@ export interface MessageEmoji {
     emojiId: string
     shortcuts: string[]
     searchTerms: string[]
+    supportsSkinTone: boolean
     image: {
       thumbnails: Thumbnail[]
       accessibility: {
@@ -21,7 +60,8 @@ export interface MessageEmoji {
         }
       }
     }
-    isCustomEmoji: true
+    variantIds: string[]
+    isCustomEmoji?: true
   }
 }
 
@@ -31,7 +71,7 @@ export interface AuthorBadge {
   liveChatAuthorBadgeRenderer: {
     customThumbnail?: {
       thumbnails: Thumbnail[]
-    },
+    }
     icon?: {
       iconType: string
     }
@@ -43,7 +83,6 @@ export interface AuthorBadge {
     }
   }
 }
-
 
 export interface MessageRendererBase {
   authorName?: {
@@ -118,17 +157,13 @@ export interface LiveChatMembershipItemRenderer extends MessageRendererBase {
   authorBadges: AuthorBadge[]
 }
 
-export interface ActionItem  {
+export interface AddChatItemAction {
   item: {
     liveChatTextMessageRenderer?: LiveChatTextMessageRenderer
     liveChatPaidMessageRenderer?: LiveChatPaidMessageRenderer
     liveChatMembershipItemRenderer?: LiveChatMembershipItemRenderer
     liveChatPaidStickerRenderer?: LiveChatPaidStickerRenderer
-  },
+    liveChatViewerEngagementMessageRenderer?: object
+  }
   clientId: string
-}
-
-export interface Action {
-  addChatItemAction?: ActionItem
-  addLiveChatTickerItemAction?: any
 }

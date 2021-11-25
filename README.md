@@ -1,11 +1,15 @@
 # youtube-chat
-> Fetch Youtube live chat without API
+[![npm version](https://badge.fury.io/js/youtube-chat.svg)](https://badge.fury.io/js/youtube-chat)
+![npm](https://img.shields.io/npm/dt/youtube-chat)
+![NPM](https://img.shields.io/npm/l/youtube-chat)
 
-***You will need to take full responsibility for your action***
+> Fetch YouTube live chat without API
+
+☢ ***You will need to take full responsibility for your action*** ☢
 
 ## Getting started
 1. Install
-    - `npm i youtube-chat`
+    - `npm i --save youtube-chat`
     - `yarn add youtube-chat`
 2. Import
     - Javascript
@@ -19,7 +23,8 @@
 3. Create instance with ChannelID or LiveID
     ```javascript
     // If channelId is specified, liveId in the current stream is automatically acquired.
-    const liveChat = new LiveChat({channelId: 'UCxkOLgdNumvVIQqn5ps_bJA?'})
+    // Recommended
+    const liveChat = new LiveChat({channelId: 'UCxkOLgdNumvVIQqn5ps_bJA'})
     
     // Or specify LiveID in Stream manually.
     const liveChat = new LiveChat({liveId: 'bc5DoKBZRIo'})
@@ -28,54 +33,61 @@
     ```typescript
     // Emit at start of observation chat.
     // liveId: string
-    liveChat.on('start', (liveId) => {})
+    liveChat.on('start', (liveId) => {
+      /* Your code here! */
+    })
    
     // Emit at end of observation chat.
     // reason: string?
-    liveChat.on('end', (reason) => {})
+    liveChat.on('end', (reason) => {
+      /* Your code here! */
+    })
     
     // Emit at receive chat.
-    // comment: CommentItem
-    liveChat.on('comment', (comment) => {})
+    // chat: ChatItem
+    liveChat.on('chat', (chatItem) => {
+      /* Your code here! */
+    })
     
     // Emit when an error occurs
-    // err: Error
-    liveChat.on('error', (err) => {})
+    // err: Error or any
+    liveChat.on('error', (err) => {
+      /* Your code here! */
+    })
     ```
 5. Start
     ```typescript
     // Start fetch loop
-    liveChat.start().then(ok => {
-      if (!ok) {
-        console.log("Failed to start, check emitted error")
-      }
-    })
+    const ok = await liveChat.start()
+    if (!ok) {
+      console.log("Failed to start, check emitted error")
+    }
     ```
 
 ## Types
-### CommentItem
+### ChatItem
 ```typescript
-interface CommentItem {
-  id: string
-  author: {
-    name: string
-    thumbnail?: ImageItem
-    channelId: string
-    badge?: {
-      thumbnail: ImageItem
-      label: string
-    }
-  }
-  message: MessageItem[]
-  superchat?: {
-    amount: string
-    color: number
-  }
-  membership: boolean
-  isVerified: boolean
-  isOwner: boolean
-  isModerator: boolean
-  timestamp: number
+export interface ChatItem {
+   author: {
+      name: string
+      thumbnail?: ImageItem
+      channelId: string
+      badge?: {
+         thumbnail: ImageItem
+         label: string
+      }
+   }
+   message: MessageItem[]
+   superchat?: {
+      amount: string
+      color: string
+      sticker?: ImageItem
+   }
+   isMembership: boolean
+   isVerified: boolean
+   isOwner: boolean
+   isModerator: boolean
+   timestamp: Date
 }
 ```
 
@@ -89,7 +101,11 @@ type MessageItem = { text: string } | ImageItem
 interface ImageItem {
   url: string
   alt: string
-  width: number
-  height: number
 }
 ```
+
+## References
+- https://drroot.page/wp/?p=227
+- https://github.com/taizan-hokuto/pytchat
+
+Thank you!👍

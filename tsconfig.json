@@ -1,10 +1,9 @@
 {
   "compilerOptions": {
-    "target": "es2017",
+    "target": "es2015",
     "module": "commonjs",
     "strict": true,
-    "jsx": "preserve",
-    "importHelpers": true,
+    "importHelpers": false,
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "esModuleInterop": true,
@@ -13,9 +12,6 @@
     "declaration": true,
     "baseUrl": ".",
     "outDir": "dist",
-    "typeRoots": [
-      "src/@types"
-    ],
     "types": [
       "node",
       "jest"
