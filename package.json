@@ -11,6 +11,7 @@
     "build": "tsc",
     "debug": "node --require ts-node/register src/debug.ts",
     "test": "jest",
+    "lint": "eslint \"src/**/*.ts\" \"test/**/*.ts\"",
     "fmt": "prettier --write \"{src,test}/**/*.ts\" && eslint --fix \"src/**/*.ts\" \"test/**/*.ts\""
   },
   "files": [
