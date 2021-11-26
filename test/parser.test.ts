@@ -1,4 +1,4 @@
-import { parseChatData } from "../src/parser"
+import { getOptionsFromLivePage, parseChatData } from "../src/parser"
 import { readFileSync } from "fs"
 
 describe("Parser", () => {
@@ -319,6 +319,27 @@ describe("Parser", () => {
       const [chatItems, continuation] = parseChatData(res)
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toStrictEqual([])
+    })
+  })
+
+  describe("getOptionsFromLivePage", () => {
+    test("Normal", () => {
+      const res = readFileSync(__dirname + "/testdata/live-page.html").toString()
+      const options = getOptionsFromLivePage(res)
+      expect(options).toMatchObject({
+        liveId: expect.any(String),
+        apiKey: expect.any(String),
+        clientVersion: expect.any(String),
+        continuation: expect.any(String),
+      })
+    })
+
+    test("Replay (Finished)", () => {
+
+    })
+
+    test("No such Live", () => {
+
     })
   })
 })
