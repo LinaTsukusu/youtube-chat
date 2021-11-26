@@ -167,3 +167,10 @@ export interface AddChatItemAction {
   }
   clientId: string
 }
+
+/** Options for get_live_chat */
+export interface FetchOptions {
+  apiKey: string
+  clientVersion: string
+  continuation: string
+}
