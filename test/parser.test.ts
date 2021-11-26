@@ -335,11 +335,19 @@ describe("Parser", () => {
     })
 
     test("Replay (Finished)", () => {
-
+      const res = readFileSync(__dirname + "/testdata/replay_page.html").toString()
+      const options = getOptionsFromLivePage(res)
+      expect(options).toMatchObject({
+        liveId: expect.any(String),
+        apiKey: expect.any(String),
+        clientVersion: expect.any(String),
+        continuation: expect.any(String),
+      })
     })
 
     test("No such Live", () => {
-
+      const res = readFileSync(__dirname + "/testdata/no_live_page.html").toString()
+      expect(() => getOptionsFromLivePage(res)).toThrowError(/^Live Stream was not found$/)
     })
   })
 })
