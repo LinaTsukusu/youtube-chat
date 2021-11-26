@@ -6,7 +6,7 @@ describe("Parser", () => {
     const res = JSON.parse(readFileSync(__dirname + "/testdata/get_live_chat.normal.json").toString())
     const [chatItems, continuation] = parseChatData(res)
     expect(continuation).toBe("test-continuation:01")
-    expect(chatItems).toStrictEqual([
+    expect(chatItems).toMatchObject([
       {
         author: {
           name: "authorName",
@@ -34,7 +34,7 @@ describe("Parser", () => {
     const res = JSON.parse(readFileSync(__dirname + "/testdata/get_live_chat.emoji.json").toString())
     const [chatItems, continuation] = parseChatData(res)
     expect(continuation).toBe("test-continuation:01")
-    expect(chatItems).toStrictEqual([
+    expect(chatItems).toMatchObject([
       {
         author: {
           name: "authorName",
@@ -65,7 +65,7 @@ describe("Parser", () => {
     const res = JSON.parse(readFileSync(__dirname + "/testdata/get_live_chat.custom-emoji.json").toString())
     const [chatItems, continuation] = parseChatData(res)
     expect(continuation).toBe("test-continuation:01")
-    expect(chatItems).toStrictEqual([
+    expect(chatItems).toMatchObject([
       {
         author: {
           name: "authorName",
@@ -96,7 +96,7 @@ describe("Parser", () => {
     const res = JSON.parse(readFileSync(__dirname + "/testdata/get_live_chat.from-member.json").toString())
     const [chatItems, continuation] = parseChatData(res)
     expect(continuation).toBe("test-continuation:01")
-    expect(chatItems).toStrictEqual([
+    expect(chatItems).toMatchObject([
       {
         author: {
           name: "authorName",
@@ -131,7 +131,7 @@ describe("Parser", () => {
     const res = JSON.parse(readFileSync(__dirname + "/testdata/get_live_chat.subscribe-member.json").toString())
     const [chatItems, continuation] = parseChatData(res)
     expect(continuation).toBe("test-continuation:01")
-    expect(chatItems).toStrictEqual([
+    expect(chatItems).toMatchObject([
       {
         author: {
           name: "authorName",
@@ -169,7 +169,7 @@ describe("Parser", () => {
     const res = JSON.parse(readFileSync(__dirname + "/testdata/get_live_chat.super-chat.json").toString())
     const [chatItems, continuation] = parseChatData(res)
     expect(continuation).toBe("test-continuation:01")
-    expect(chatItems).toStrictEqual([
+    expect(chatItems).toMatchObject([
       {
         author: {
           name: "authorName",
@@ -201,7 +201,7 @@ describe("Parser", () => {
     const res = JSON.parse(readFileSync(__dirname + "/testdata/get_live_chat.super-sticker.json").toString())
     const [chatItems, continuation] = parseChatData(res)
     expect(continuation).toBe("test-continuation:01")
-    expect(chatItems).toStrictEqual([
+    expect(chatItems).toMatchObject([
       {
         author: {
           name: "authorName",
@@ -233,7 +233,7 @@ describe("Parser", () => {
     const res = JSON.parse(readFileSync(__dirname + "/testdata/get_live_chat.from-verified.json").toString())
     const [chatItems, continuation] = parseChatData(res)
     expect(continuation).toBe("test-continuation:01")
-    expect(chatItems).toStrictEqual([
+    expect(chatItems).toMatchObject([
       {
         author: {
           name: "authorName",
@@ -261,7 +261,7 @@ describe("Parser", () => {
     const res = JSON.parse(readFileSync(__dirname + "/testdata/get_live_chat.from-moderator.json").toString())
     const [chatItems, continuation] = parseChatData(res)
     expect(continuation).toBe("test-continuation:01")
-    expect(chatItems).toStrictEqual([
+    expect(chatItems).toMatchObject([
       {
         author: {
           name: "authorName",
@@ -289,7 +289,7 @@ describe("Parser", () => {
     const res = JSON.parse(readFileSync(__dirname + "/testdata/get_live_chat.from-owner.json").toString())
     const [chatItems, continuation] = parseChatData(res)
     expect(continuation).toBe("test-continuation:01")
-    expect(chatItems).toStrictEqual([
+    expect(chatItems).toMatchObject([
       {
         author: {
           name: "authorName",
