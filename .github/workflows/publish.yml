@@ -19,6 +19,7 @@ jobs:
           cache: yarn
           registry-url: 'https://registry.npmjs.org'
       - name: Check can publish
+        id: can_publish
         run: npx can-npm-publish --verbose
       - name: Install modules
         run: yarn install
@@ -30,3 +31,6 @@ jobs:
         run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: No Update
+        if: failure() && steps.can_publish.outcome == 'failure'
+        run: echo "No Update"
