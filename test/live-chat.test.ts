@@ -71,7 +71,7 @@ describe("LiveChat", () => {
         resolve(chatItem)
       })
     })
-    expect(chatItem).toStrictEqual({
+    expect(chatItem).toMatchObject({
       author: {
         name: "authorName",
         thumbnail: {
