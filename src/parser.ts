@@ -20,6 +20,11 @@ export function getOptionsFromLivePage(data: string): FetchOptions & { liveId: s
     throw new Error("Live Stream was not found")
   }
 
+  const replayResult = data.match(/['"]isReplay['"]:\s*(true)/)
+  if (replayResult) {
+    throw new Error(`${liveId} is finished live`)
+  }
+
   let apiKey: string
   const keyResult = data.match(/['"]INNERTUBE_API_KEY['"]:\s*['"](.+?)['"]/)
   if (keyResult) {
