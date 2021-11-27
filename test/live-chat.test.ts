@@ -1,13 +1,50 @@
 import { LiveChat } from "../src"
-import axios from "axios"
 import { readFileSync } from "fs"
 import { ChatItem } from "../src/types/data"
 
-jest.mock("axios")
-const mockGet = axios.get as jest.Mock
-mockGet.mockResolvedValue({ data: readFileSync(__dirname + "/testdata/live-page.html").toString() })
-const mockPost = axios.post as jest.Mock
-mockPost.mockResolvedValue({ data: require("./testdata/get_live_chat.normal.json") })
+jest.mock("../src/requests")
+import { fetchChat, fetchLivePage } from "../src/requests"
+jest.mock("../src/parser")
+import { parseChatData, getOptionsFromLivePage } from "../src/parser"
+
+const mockFetchChat = fetchChat as jest.Mock
+mockFetchChat.mockResolvedValue(JSON.parse(readFileSync(__dirname + "/testdata/get_live_chat.normal.json").toString()))
+const mockFetchLivePage = fetchLivePage as jest.Mock
+mockFetchLivePage.mockResolvedValue(readFileSync(__dirname + "/testdata/live-page.html").toString())
+
+const mockParseChatData = parseChatData as jest.Mock
+mockParseChatData.mockReturnValue([
+  [
+    {
+      author: {
+        name: "authorName",
+        thumbnail: {
+          url: "https://author.thumbnail.url",
+          alt: "authorName",
+        },
+        channelId: "channelId",
+      },
+      message: [
+        {
+          text: "Hello, World!",
+        },
+      ],
+      isMembership: false,
+      isVerified: false,
+      isOwner: false,
+      isModerator: false,
+      timestamp: new Date("2021-01-01"),
+    },
+  ],
+  "continuation",
+])
+const mockGetOptionsFromLivePage = getOptionsFromLivePage as jest.Mock
+mockGetOptionsFromLivePage.mockReturnValue({
+  liveId: "liveId",
+  apiKey: "apiKey",
+  clientVersion: "clientVersion",
+  continuation: "continuation",
+})
 
 describe("LiveChat", () => {
   beforeEach(() => {
@@ -33,7 +70,7 @@ describe("LiveChat", () => {
   test("Constructor: No IDs Error", () => {
     // eslint-disable-next-line
     // @ts-ignore
-    expect(() => new LiveChat()).toThrow(TypeError)
+    expect(() => new LiveChat()).toThrow("Required channelId or liveId.")
   })
 
   test("Start", async () => {
@@ -94,7 +131,7 @@ describe("LiveChat", () => {
   })
 
   test("On error", async () => {
-    mockGet.mockImplementationOnce(() => {
+    mockFetchLivePage.mockImplementationOnce(() => {
       throw new Error("ERROR")
     })
     const liveChat = new LiveChat({ channelId: "channelId" })

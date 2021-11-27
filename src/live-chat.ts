@@ -21,23 +21,23 @@ export class LiveChat extends (EventEmitter as new () => TypedEmitter<LiveChatEv
   #observer?: NodeJS.Timer
   #options?: FetchOptions
   readonly #interval: number = 1000
-  readonly #fetchingPage: Promise<string>
+  readonly #id: { channelId: string } | { liveId: string }
 
   constructor(id: { channelId: string } | { liveId: string }, interval = 1000) {
     super()
-    if (!("channelId" in id) && !("liveId" in id)) {
+    if (!id || (!("channelId" in id) && !("liveId" in id))) {
       throw TypeError("Required channelId or liveId.")
     } else if ("liveId" in id) {
       this.liveId = id.liveId
     }
 
-    this.#fetchingPage = fetchLivePage(id)
+    this.#id = id
     this.#interval = interval
   }
 
   async start(): Promise<boolean> {
     try {
-      const livePage = await this.#fetchingPage
+      const livePage = await fetchLivePage(this.#id)
       const options = getOptionsFromLivePage(livePage)
       this.liveId = options.liveId
       this.#options = options
