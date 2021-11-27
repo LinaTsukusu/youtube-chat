@@ -16,15 +16,15 @@
     "format-check": "prettier --check \"{src,test}/**/*.ts\""
   },
   "files": [
-    "dist",
-    "package.json",
-    "README.md",
-    "LICENSE"
+    "dist/**/*.js",
+    "dist/**/*.d.ts"
   ],
   "keywords": [
     "youtube",
     "live",
-    "chat"
+    "chat",
+    "comment",
+    "stream"
   ],
   "devDependencies": {
     "@types/jest": "^27.0.3",
