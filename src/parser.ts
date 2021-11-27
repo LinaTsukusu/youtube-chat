@@ -1,5 +1,6 @@
 import {
-  Action, FetchOptions,
+  Action,
+  FetchOptions,
   GetLiveChatResponse,
   LiveChatMembershipItemRenderer,
   LiveChatPaidMessageRenderer,
@@ -10,7 +11,7 @@ import {
 } from "./types/yt-response"
 import { ChatItem, ImageItem, MessageItem } from "./types/data"
 
-export function getOptionsFromLivePage(data: string): FetchOptions & {liveId: string} {
+export function getOptionsFromLivePage(data: string): FetchOptions & { liveId: string } {
   let liveId: string
   const idResult = data.match(/<link rel="canonical" href="https:\/\/www.youtube.com\/watch\?v=(.+?)">/)
   if (idResult) {
