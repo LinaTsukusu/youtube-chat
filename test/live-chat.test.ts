@@ -123,14 +123,27 @@ describe("LiveChat", () => {
   })
 
   test("On error", async () => {
-    mockFetchLivePage.mockImplementationOnce(() => {
-      throw new Error("ERROR")
-    })
+    mockFetchLivePage.mockRejectedValueOnce(new Error("ERROR"))
     const liveChat = new LiveChat({ channelId: "channelId" })
     const onError = jest.fn()
     liveChat.on("error", onError)
     const isStarted = await liveChat.start()
     expect(isStarted).toBe(false)
     expect(onError).toHaveBeenCalledWith(new Error("ERROR"))
+  })
+
+  test("Error: on chat", async () => {
+    mockFetchChat.mockRejectedValueOnce(new Error("ERROR"))
+    const liveChat = new LiveChat({ channelId: "channelId" })
+    const onError = jest.fn()
+    liveChat.on("error", onError)
+    await liveChat.start()
+    jest.advanceTimersToNextTimer(1000)
+    await new Promise((resolve) => {
+      onError.mockImplementation((err: unknown) => {
+        resolve(err)
+      })
+    })
+    expect(onError).toHaveBeenCalled()
   })
 })
