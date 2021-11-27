@@ -15,7 +15,6 @@ interface LiveChatEvents {
  * YouTubeライブチャット取得イベント
  */
 export class LiveChat extends (EventEmitter as new () => TypedEmitter<LiveChatEvents>) {
-  readonly channelId?: string
   liveId?: string
   #observer?: NodeJS.Timer
   #options?: FetchOptions
