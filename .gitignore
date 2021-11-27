@@ -6,3 +6,4 @@ debug.ts
 testrun.ts
 package-lock.json
 *.map
+coverage

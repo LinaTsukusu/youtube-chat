@@ -90,7 +90,7 @@
         {
           "addChatItemAction": {
             "item": {
-              "liveChatTextMessageRenderer": {
+              "liveChatPaidStickerRenderer": {
                 "authorName": {
                   "simpleText": "authorName"
                 },
