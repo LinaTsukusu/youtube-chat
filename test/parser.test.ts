@@ -336,13 +336,7 @@ describe("Parser", () => {
 
     test("Replay (Finished)", () => {
       const res = readFileSync(__dirname + "/testdata/replay_page.html").toString()
-      const options = getOptionsFromLivePage(res)
-      expect(options).toMatchObject({
-        liveId: expect.any(String),
-        apiKey: expect.any(String),
-        clientVersion: expect.any(String),
-        continuation: expect.any(String),
-      })
+      expect(() => getOptionsFromLivePage(res)).toThrow("is finished live")
     })
 
     test("No such Live", () => {
