@@ -1,7 +1,12 @@
 import { fetchLivePage, fetchChat } from "../src/requests"
-import axios from "axios"
 
 jest.mock("axios")
+import axios from "axios"
+jest.mock("../src/parser")
+import { parseChatData, getOptionsFromLivePage } from "../src/parser"
+
+const mockParseChatData = parseChatData as jest.Mock
+const mockGetOptionsFromLivePage = getOptionsFromLivePage as jest.Mock
 
 describe("requests", () => {
   describe("fetchChat", () => {
@@ -13,7 +18,7 @@ describe("requests", () => {
         clientVersion: "clientVersion",
         continuation: "continuation",
       }
-      const res = await fetchChat(options)
+      await fetchChat(options)
       expect(mockPost).toHaveBeenCalledWith(
         `https://www.youtube.com/youtubei/v1/live_chat/get_live_chat?key=${options.apiKey}`,
         {
@@ -26,7 +31,7 @@ describe("requests", () => {
           continuation: options.continuation,
         }
       )
-      expect(res).toEqual("responseData")
+      expect(mockParseChatData).toHaveBeenCalledWith("responseData")
     })
   })
 
@@ -34,17 +39,17 @@ describe("requests", () => {
     test("ChannelID request", async () => {
       const mockGet = axios.get as jest.Mock
       mockGet.mockResolvedValue({ data: "responseData" })
-      const res = await fetchLivePage({ channelId: "channelId" })
+      await fetchLivePage({ channelId: "channelId" })
       expect(mockGet).toHaveBeenCalledWith("https://www.youtube.com/channel/channelId/live")
-      expect(res).toEqual("responseData")
+      expect(mockGetOptionsFromLivePage).toHaveBeenCalledWith("responseData")
     })
 
     test("LiveID request", async () => {
       const mockGet = axios.get as jest.Mock
       mockGet.mockResolvedValue({ data: "responseData" })
-      const res = await fetchLivePage({ liveId: "liveId" })
+      await fetchLivePage({ liveId: "liveId" })
       expect(mockGet).toHaveBeenCalledWith("https://www.youtube.com/watch?v=liveId")
-      expect(res).toEqual("responseData")
+      expect(mockGetOptionsFromLivePage).toHaveBeenCalledWith("responseData")
     })
   })
 })

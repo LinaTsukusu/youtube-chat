@@ -1,19 +1,11 @@
 import { LiveChat } from "../src"
-import { readFileSync } from "fs"
 import { ChatItem } from "../src/types/data"
 
 jest.mock("../src/requests")
 import { fetchChat, fetchLivePage } from "../src/requests"
-jest.mock("../src/parser")
-import { parseChatData, getOptionsFromLivePage } from "../src/parser"
 
 const mockFetchChat = fetchChat as jest.Mock
-mockFetchChat.mockResolvedValue(JSON.parse(readFileSync(__dirname + "/testdata/get_live_chat.normal.json").toString()))
-const mockFetchLivePage = fetchLivePage as jest.Mock
-mockFetchLivePage.mockResolvedValue(readFileSync(__dirname + "/testdata/live-page.html").toString())
-
-const mockParseChatData = parseChatData as jest.Mock
-mockParseChatData.mockReturnValue([
+mockFetchChat.mockResolvedValue([
   [
     {
       author: {
@@ -38,8 +30,8 @@ mockParseChatData.mockReturnValue([
   ],
   "continuation",
 ])
-const mockGetOptionsFromLivePage = getOptionsFromLivePage as jest.Mock
-mockGetOptionsFromLivePage.mockReturnValue({
+const mockFetchLivePage = fetchLivePage as jest.Mock
+mockFetchLivePage.mockResolvedValue({
   liveId: "liveId",
   apiKey: "apiKey",
   clientVersion: "clientVersion",

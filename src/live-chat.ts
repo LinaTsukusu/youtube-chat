@@ -1,6 +1,5 @@
 import { EventEmitter } from "events"
 import TypedEmitter from "typed-emitter"
-import { getOptionsFromLivePage, parseChatData } from "./parser"
 import { ChatItem } from "./types/data"
 import { FetchOptions } from "./types/yt-response"
 import { fetchChat, fetchLivePage } from "./requests"
@@ -37,8 +36,7 @@ export class LiveChat extends (EventEmitter as new () => TypedEmitter<LiveChatEv
 
   async start(): Promise<boolean> {
     try {
-      const livePage = await fetchLivePage(this.#id)
-      const options = getOptionsFromLivePage(livePage)
+      const options = await fetchLivePage(this.#id)
       this.liveId = options.liveId
       this.#options = options
 
@@ -68,8 +66,7 @@ export class LiveChat extends (EventEmitter as new () => TypedEmitter<LiveChatEv
     }
 
     try {
-      const data = await fetchChat(this.#options)
-      const [chatItems, continuation] = parseChatData(data)
+      const [chatItems, continuation] = await fetchChat(this.#options)
       chatItems.forEach((chatItem) => this.emit("chat", chatItem))
 
       this.#options.continuation = continuation
