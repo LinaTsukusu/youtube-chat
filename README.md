@@ -15,44 +15,44 @@
 2. Import
     - Javascript
     ```javascript
-    const LiveChat = require('youtube-chat').LiveChat
+    const { LiveChat } = require("youtube-chat")
     ```
     - Typescript
     ```typescript
-    import {LiveChat} from 'youtube-chat'
+    import { LiveChat } from "youtube-chat"
     ```
 3. Create instance with ChannelID or LiveID
     ```javascript
     // If channelId is specified, liveId in the current stream is automatically acquired.
     // Recommended
-    const liveChat = new LiveChat({channelId: 'UCxkOLgdNumvVIQqn5ps_bJA'})
+    const liveChat = new LiveChat({channelId: "CHANNEL_ID_HERE"})
     
     // Or specify LiveID in Stream manually.
-    const liveChat = new LiveChat({liveId: 'bc5DoKBZRIo'})
+    const liveChat = new LiveChat({liveId: "LIVE_ID_HERE"})
     ```
 4. Add events
     ```typescript
     // Emit at start of observation chat.
     // liveId: string
-    liveChat.on('start', (liveId) => {
+    liveChat.on("start", (liveId) => {
       /* Your code here! */
     })
    
     // Emit at end of observation chat.
     // reason: string?
-    liveChat.on('end', (reason) => {
+    liveChat.on("end", (reason) => {
       /* Your code here! */
     })
     
     // Emit at receive chat.
     // chat: ChatItem
-    liveChat.on('chat', (chatItem) => {
+    liveChat.on("chat", (chatItem) => {
       /* Your code here! */
     })
     
     // Emit when an error occurs
     // err: Error or any
-    liveChat.on('error', (err) => {
+    liveChat.on("error", (err) => {
       /* Your code here! */
     })
     ```
@@ -66,7 +66,7 @@
     ```
 6. Stop loop
    ```typescript
-   livechat.stop()
+   liveChat.stop()
    ```
 
 ## Types
