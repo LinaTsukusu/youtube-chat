@@ -18,7 +18,7 @@ export async function fetchChat(options: FetchOptions): Promise<[ChatItem[], str
   return parseChatData(res.data)
 }
 
-export async function fetchLivePage(id: { channelId: string } | { liveId: string }): Promise<FetchOptions> {
+export async function fetchLivePage(id: { channelId: string } | { liveId: string }) {
   const url =
     "channelId" in id
       ? `https://www.youtube.com/channel/${id.channelId}/live`
