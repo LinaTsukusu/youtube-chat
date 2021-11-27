@@ -1,6 +1,6 @@
 {
   "name": "youtube-chat",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/LinaTsukusu/youtube-chat.git",
@@ -16,15 +16,15 @@
     "format-check": "prettier --check \"{src,test}/**/*.ts\""
   },
   "files": [
-    "dist",
-    "package.json",
-    "README.md",
-    "LICENSE"
+    "dist/**/*.js",
+    "dist/**/*.d.ts"
   ],
   "keywords": [
     "youtube",
     "live",
-    "chat"
+    "chat",
+    "comment",
+    "stream"
   ],
   "devDependencies": {
     "@types/jest": "^27.0.3",
