@@ -1,6 +1,6 @@
 {
   "name": "youtube-chat",
-  "version": "2.0.4",
+  "version": "2.1.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/LinaTsukusu/youtube-chat.git",
@@ -38,10 +38,10 @@
     "prettier": "^2.4.1",
     "ts-jest": "^27.0.7",
     "ts-node": "^10.4.0",
-    "typed-emitter": "^1.4.0",
     "typescript": "^4.5.2"
   },
   "dependencies": {
-    "axios": "^0.24.0"
+    "axios": "^0.24.0",
+    "typed-emitter": "^1.4.0"
   }
 }
