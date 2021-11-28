@@ -74,10 +74,6 @@ describe("LiveChat", () => {
     expect(isStarted).toBe(true)
     expect(onStart).toHaveBeenCalledWith(expect.any(String))
     expect(setInterval).toHaveBeenCalled()
-
-    const secondStart = await liveChat.start()
-    expect(secondStart).toBe(false)
-    expect(onStart).toHaveBeenCalledTimes(1)
     spy.mockRestore()
   })
 
@@ -90,6 +86,22 @@ describe("LiveChat", () => {
     liveChat.stop("STOP")
     expect(clearInterval).toHaveBeenCalled()
     expect(onEnd).toHaveBeenCalledWith("STOP")
+    spy.mockRestore()
+  })
+
+  test("Start Second time", async () => {
+    const spy = jest.spyOn(global, "setInterval")
+    const liveChat = new LiveChat({ channelId: "channelId" })
+    const onStart = jest.fn()
+    liveChat.on("start", onStart)
+    await liveChat.start()
+    const secondStart = await liveChat.start()
+    expect(secondStart).toBe(false)
+    expect(onStart).toHaveBeenCalledTimes(1)
+    liveChat.stop()
+    const startAfterStop = await liveChat.start()
+    expect(startAfterStop).toBe(true)
+    expect(onStart).toHaveBeenCalledTimes(2)
     spy.mockRestore()
   })
 
