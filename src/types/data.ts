@@ -30,11 +30,11 @@ export type MessageItem = { text: string } | EmojiItem
 /** 画像 */
 export interface ImageItem {
   url: string
-  alt: string
+  alt: string | null
 }
 
 /** Emoji */
 export interface EmojiItem extends ImageItem {
-  emojiText: string
+  emojiText: string | null
   isCustomEmoji: boolean
 }
