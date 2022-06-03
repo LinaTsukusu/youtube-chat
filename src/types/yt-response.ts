@@ -157,12 +157,54 @@ export interface LiveChatMembershipItemRenderer extends MessageRendererBase {
   authorBadges: AuthorBadge[]
 }
 
+export interface LiveChatSponsorshipsGiftPurchaseAnnouncementRenderer {
+  id: string
+  timestampUsec: string
+  authorExternalChannelId: string
+  header: {
+    liveChatSponsorshipsHeaderRenderer: LiveChatSponsorshipsHeaderRenderer
+  }
+}
+
+export interface LiveChatSponsorshipsHeaderRenderer {
+  primaryText: {
+    runs: MessageRun[]
+  }
+  image?: {
+    thumbnails?: { url: string }[]
+  }
+  authorName?: {
+    simpleText: string
+  }
+  authorPhoto: {
+    thumbnails: Thumbnail[]
+  }
+  authorBadges?: AuthorBadge[]
+  contextMenuEndpoint: {
+    clickTrackingParams: string
+    commandMetadata: {
+      webCommandMetadata: {
+        ignoreNavigation: true
+      }
+    }
+    liveChatItemContextMenuEndpoint: {
+      params: string
+    }
+  }
+  contextMenuAccessibility: {
+    accessibilityData: {
+      label: string
+    }
+  }
+}
+
 export interface AddChatItemAction {
   item: {
     liveChatTextMessageRenderer?: LiveChatTextMessageRenderer
     liveChatPaidMessageRenderer?: LiveChatPaidMessageRenderer
     liveChatMembershipItemRenderer?: LiveChatMembershipItemRenderer
     liveChatPaidStickerRenderer?: LiveChatPaidStickerRenderer
+    liveChatSponsorshipsGiftPurchaseAnnouncementRenderer?: LiveChatSponsorshipsGiftPurchaseAnnouncementRenderer
     liveChatViewerEngagementMessageRenderer?: object
   }
   clientId: string
