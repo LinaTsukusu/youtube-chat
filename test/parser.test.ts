@@ -79,7 +79,7 @@ describe("Parser", () => {
           message: [
             {
               url: "https://www.youtube.com/s/gaming/emoji/0f0cae22/emoji_u1f44f_1f3ff.svg",
-              alt: null,
+              alt: "",
               isCustomEmoji: false,
               emojiText: "👏🏿",
             },
