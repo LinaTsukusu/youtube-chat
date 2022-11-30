@@ -38,3 +38,5 @@ export interface EmojiItem extends ImageItem {
   emojiText: string
   isCustomEmoji: boolean
 }
+
+export type YoutubeId = { channelId: string } | { liveId: string } | { handle: string }
