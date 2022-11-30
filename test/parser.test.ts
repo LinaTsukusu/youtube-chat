@@ -383,7 +383,7 @@ describe("Parser", () => {
 
     test("No such Live", () => {
       const res = readFileSync(__dirname + "/testdata/no_live_page.html").toString()
-      expect(() => getOptionsFromLivePage(res)).toThrowError(/^Live Stream was not found$/)
+      expect(() => getOptionsFromLivePage(res)).toThrow(/^Live Stream was not found$/)
     })
   })
 })

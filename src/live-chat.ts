@@ -4,7 +4,7 @@ import { ChatItem, YoutubeId } from "./types/data"
 import { FetchOptions } from "./types/yt-response"
 import { fetchChat, fetchLivePage } from "./requests"
 
-interface LiveChatEvents {
+type LiveChatEvents = {
   start: (liveId: string) => void
   end: (reason?: string) => void
   chat: (chatItem: ChatItem) => void
