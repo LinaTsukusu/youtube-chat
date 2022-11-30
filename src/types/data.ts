@@ -2,6 +2,7 @@
 
 /** 取得したチャット詳細 */
 export interface ChatItem {
+  id: string
   author: {
     name: string
     thumbnail?: ImageItem
@@ -38,3 +39,5 @@ export interface EmojiItem extends ImageItem {
   emojiText: string
   isCustomEmoji: boolean
 }
+
+export type YoutubeId = { channelId: string } | { liveId: string } | { handle: string }

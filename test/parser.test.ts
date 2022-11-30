@@ -9,6 +9,7 @@ describe("Parser", () => {
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toMatchObject([
         {
+          id: "id",
           author: {
             name: "authorName",
             thumbnail: {
@@ -31,12 +32,13 @@ describe("Parser", () => {
       ])
     })
 
-    test("Included Global Emoji", () => {
-      const res = JSON.parse(readFileSync(__dirname + "/testdata/get_live_chat.emoji.json").toString())
+    test("Included Global Emoji 1", () => {
+      const res = JSON.parse(readFileSync(__dirname + "/testdata/get_live_chat.global-emoji1.json").toString())
       const [chatItems, continuation] = parseChatData(res)
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toMatchObject([
         {
+          id: "id",
           author: {
             name: "authorName",
             thumbnail: {
@@ -62,12 +64,45 @@ describe("Parser", () => {
       ])
     })
 
+    test("Included Global Emoji 2", () => {
+      const res = JSON.parse(readFileSync(__dirname + "/testdata/get_live_chat.global-emoji2.json").toString())
+      const [chatItems, continuation] = parseChatData(res)
+      expect(continuation).toBe("test-continuation:01")
+      expect(chatItems).toMatchObject([
+        {
+          id: "id",
+          author: {
+            name: "authorName",
+            thumbnail: {
+              url: "https://author.thumbnail.url",
+              alt: "authorName",
+            },
+            channelId: "channelId",
+          },
+          message: [
+            {
+              url: "https://www.youtube.com/s/gaming/emoji/0f0cae22/emoji_u1f44f_1f3ff.svg",
+              alt: "",
+              isCustomEmoji: false,
+              emojiText: "👏🏿",
+            },
+          ],
+          isMembership: false,
+          isVerified: false,
+          isOwner: false,
+          isModerator: false,
+          timestamp: new Date("2021-01-01"),
+        },
+      ])
+    })
+
     test("Included Custom Emoji", () => {
       const res = JSON.parse(readFileSync(__dirname + "/testdata/get_live_chat.custom-emoji.json").toString())
       const [chatItems, continuation] = parseChatData(res)
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toMatchObject([
         {
+          id: "id",
           author: {
             name: "authorName",
             thumbnail: {
@@ -99,6 +134,7 @@ describe("Parser", () => {
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toMatchObject([
         {
+          id: "id",
           author: {
             name: "authorName",
             thumbnail: {
@@ -134,6 +170,7 @@ describe("Parser", () => {
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toMatchObject([
         {
+          id: "id",
           author: {
             name: "authorName",
             thumbnail: {
@@ -172,6 +209,7 @@ describe("Parser", () => {
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toMatchObject([
         {
+          id: "id",
           author: {
             name: "authorName",
             thumbnail: {
@@ -204,6 +242,7 @@ describe("Parser", () => {
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toMatchObject([
         {
+          id: "id",
           author: {
             name: "authorName",
             thumbnail: {
@@ -236,6 +275,7 @@ describe("Parser", () => {
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toMatchObject([
         {
+          id: "id",
           author: {
             name: "authorName",
             thumbnail: {
@@ -264,6 +304,7 @@ describe("Parser", () => {
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toMatchObject([
         {
+          id: "id",
           author: {
             name: "authorName",
             thumbnail: {
@@ -292,6 +333,7 @@ describe("Parser", () => {
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toMatchObject([
         {
+          id: "id",
           author: {
             name: "authorName",
             thumbnail: {
@@ -341,7 +383,7 @@ describe("Parser", () => {
 
     test("No such Live", () => {
       const res = readFileSync(__dirname + "/testdata/no_live_page.html").toString()
-      expect(() => getOptionsFromLivePage(res)).toThrowError(/^Live Stream was not found$/)
+      expect(() => getOptionsFromLivePage(res)).toThrow(/^Live Stream was not found$/)
     })
   })
 })

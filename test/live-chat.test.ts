@@ -8,6 +8,7 @@ const mockFetchChat = fetchChat as jest.Mock
 mockFetchChat.mockResolvedValue([
   [
     {
+      id: "id",
       author: {
         name: "authorName",
         thumbnail: {
@@ -62,7 +63,7 @@ describe("LiveChat", () => {
   test("Constructor: No IDs Error", () => {
     // eslint-disable-next-line
     // @ts-ignore
-    expect(() => new LiveChat()).toThrow("Required channelId or liveId.")
+    expect(() => new LiveChat()).toThrow("Required channelId or liveId or handle.")
   })
 
   test("Start", async () => {
@@ -117,6 +118,7 @@ describe("LiveChat", () => {
       })
     })
     expect(chatItem).toMatchObject({
+      id: "id",
       author: {
         name: "authorName",
         thumbnail: {
