@@ -62,7 +62,7 @@ describe("LiveChat", () => {
   test("Constructor: No IDs Error", () => {
     // eslint-disable-next-line
     // @ts-ignore
-    expect(() => new LiveChat()).toThrow("Required channelId or liveId.")
+    expect(() => new LiveChat()).toThrow("Required channelId or liveId or handle.")
   })
 
   test("Start", async () => {
