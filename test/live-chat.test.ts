@@ -8,6 +8,7 @@ const mockFetchChat = fetchChat as jest.Mock
 mockFetchChat.mockResolvedValue([
   [
     {
+      id: "id",
       author: {
         name: "authorName",
         thumbnail: {
@@ -117,6 +118,7 @@ describe("LiveChat", () => {
       })
     })
     expect(chatItem).toMatchObject({
+      id: "id",
       author: {
         name: "authorName",
         thumbnail: {

@@ -9,6 +9,7 @@ describe("Parser", () => {
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toMatchObject([
         {
+          id: "id",
           author: {
             name: "authorName",
             thumbnail: {
@@ -37,6 +38,7 @@ describe("Parser", () => {
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toMatchObject([
         {
+          id: "id",
           author: {
             name: "authorName",
             thumbnail: {
@@ -68,6 +70,7 @@ describe("Parser", () => {
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toMatchObject([
         {
+          id: "id",
           author: {
             name: "authorName",
             thumbnail: {
@@ -99,6 +102,7 @@ describe("Parser", () => {
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toMatchObject([
         {
+          id: "id",
           author: {
             name: "authorName",
             thumbnail: {
@@ -130,6 +134,7 @@ describe("Parser", () => {
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toMatchObject([
         {
+          id: "id",
           author: {
             name: "authorName",
             thumbnail: {
@@ -165,6 +170,7 @@ describe("Parser", () => {
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toMatchObject([
         {
+          id: "id",
           author: {
             name: "authorName",
             thumbnail: {
@@ -203,6 +209,7 @@ describe("Parser", () => {
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toMatchObject([
         {
+          id: "id",
           author: {
             name: "authorName",
             thumbnail: {
@@ -235,6 +242,7 @@ describe("Parser", () => {
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toMatchObject([
         {
+          id: "id",
           author: {
             name: "authorName",
             thumbnail: {
@@ -267,6 +275,7 @@ describe("Parser", () => {
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toMatchObject([
         {
+          id: "id",
           author: {
             name: "authorName",
             thumbnail: {
@@ -295,6 +304,7 @@ describe("Parser", () => {
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toMatchObject([
         {
+          id: "id",
           author: {
             name: "authorName",
             thumbnail: {
@@ -323,6 +333,7 @@ describe("Parser", () => {
       expect(continuation).toBe("test-continuation:01")
       expect(chatItems).toMatchObject([
         {
+          id: "id",
           author: {
             name: "authorName",
             thumbnail: {

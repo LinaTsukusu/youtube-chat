@@ -157,6 +157,7 @@ function parseActionToChatItem(data: Action): ChatItem | null {
 
   const authorNameText = messageRenderer.authorName?.simpleText ?? ""
   const ret: ChatItem = {
+    id: messageRenderer.id,
     author: {
       name: authorNameText,
       thumbnail: parseThumbnailToImageItem(messageRenderer.authorPhoto.thumbnails, authorNameText),
