@@ -2,6 +2,7 @@
 
 /** 取得したチャット詳細 */
 export interface ChatItem {
+  id: string
   author: {
     name: string
     thumbnail?: ImageItem
