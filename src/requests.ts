@@ -3,6 +3,8 @@ import { parseChatData, getOptionsFromLivePage } from "./parser"
 import { FetchOptions } from "./types/yt-response"
 import { ChatItem, YoutubeId } from "./types/data"
 
+axios.defaults.headers.common["Accept-Encoding"] = "utf-8"
+
 export async function fetchChat(options: FetchOptions): Promise<[ChatItem[], string]> {
   const url = `https://www.youtube.com/youtubei/v1/live_chat/get_live_chat?key=${options.apiKey}`
   const res = await axios.post(url, {
