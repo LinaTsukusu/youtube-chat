@@ -20,8 +20,9 @@ export class LiveChat extends (EventEmitter as new () => TypedEmitter<LiveChatEv
   #options?: FetchOptions
   readonly #interval: number = 1000
   readonly #id: YoutubeId
+  readonly #chatType: boolean = false
 
-  constructor(id: YoutubeId, interval = 1000) {
+  constructor(id: YoutubeId, chatType = false, interval = 1000) {
     super()
     if (!id || (!("channelId" in id) && !("liveId" in id) && !("handle" in id))) {
       throw TypeError("Required channelId or liveId or handle.")
@@ -31,6 +32,7 @@ export class LiveChat extends (EventEmitter as new () => TypedEmitter<LiveChatEv
 
     this.#id = id
     this.#interval = interval
+    this.#chatType = chatType
   }
 
   async start(): Promise<boolean> {
@@ -38,7 +40,7 @@ export class LiveChat extends (EventEmitter as new () => TypedEmitter<LiveChatEv
       return false
     }
     try {
-      const options = await fetchLivePage(this.#id)
+      const options = await fetchLivePage(this.#id, this.#chatType)
       this.liveId = options.liveId
       this.#options = options
 

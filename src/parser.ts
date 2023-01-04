@@ -11,7 +11,7 @@ import {
 } from "./types/yt-response"
 import { ChatItem, ImageItem, MessageItem } from "./types/data"
 
-export function getOptionsFromLivePage(data: string): FetchOptions & { liveId: string } {
+export function getOptionsFromLivePage(data: string, chatType?: boolean): FetchOptions & { liveId: string } {
   let liveId: string
   const idResult = data.match(/<link rel="canonical" href="https:\/\/www.youtube.com\/watch\?v=(.+?)">/)
   if (idResult) {
@@ -42,9 +42,16 @@ export function getOptionsFromLivePage(data: string): FetchOptions & { liveId: s
   }
 
   let continuation: string
-  const continuationResult = data.match(/['"]continuation['"]:\s*['"](.+?)['"]/)
+  const continuationResult = data.matchAll(/['"]continuation['"]:\s*['"](.+?)['"]/g)
   if (continuationResult) {
-    continuation = continuationResult[1]
+    const list = Array.from(continuationResult)
+    if (chatType) {
+      /** すべてのチャットの取得時に利用するcontinuation */
+      continuation = list[2][1]
+    } else {
+      /** トップチャットの取得時に利用するcontinuation */
+      continuation = list[1][1]
+    }
   } else {
     throw new Error("Continuation was not found")
   }
