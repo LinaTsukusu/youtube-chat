@@ -3,6 +3,7 @@ import {
   FetchOptions,
   GetLiveChatResponse,
   LiveChatMembershipItemRenderer,
+  LiveChatMembershipMilestoneRenderer,
   LiveChatPaidMessageRenderer,
   LiveChatPaidStickerRenderer,
   LiveChatTextMessageRenderer,
@@ -132,6 +133,7 @@ function rendererFromAction(
   | LiveChatPaidMessageRenderer
   | LiveChatPaidStickerRenderer
   | LiveChatMembershipItemRenderer
+  | LiveChatMembershipMilestoneRenderer
   | null {
   if (!action.addChatItemAction) {
     return null
@@ -145,6 +147,8 @@ function rendererFromAction(
     return item.liveChatPaidStickerRenderer
   } else if (item.liveChatMembershipItemRenderer) {
     return item.liveChatMembershipItemRenderer
+  } else if (item.LiveChatMembershipMilestoneRenderer) {
+    return item.LiveChatMembershipMilestoneRenderer
   }
   return null
 }
@@ -158,10 +162,11 @@ function parseActionToChatItem(data: Action): ChatItem | null {
   let message: MessageRun[] = []
   if ("message" in messageRenderer) {
     message = messageRenderer.message.runs
+  } else if ("empty" in messageRenderer) {
+    message = messageRenderer.headerPrimaryText.runs
   } else if ("headerSubtext" in messageRenderer) {
     message = messageRenderer.headerSubtext.runs
   }
-
   const authorNameText = messageRenderer.authorName?.simpleText ?? ""
   const ret: ChatItem = {
     id: messageRenderer.id,

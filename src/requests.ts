@@ -20,7 +20,10 @@ export async function fetchChat(options: FetchOptions): Promise<[ChatItem[], str
   return parseChatData(res.data)
 }
 
-export async function fetchLivePage(id: { channelId: string } | { liveId: string } | { handle: string }, chatType?: boolean) {
+export async function fetchLivePage(
+  id: { channelId: string } | { liveId: string } | { handle: string },
+  chatType?: boolean
+) {
   const url = generateLiveUrl(id)
   if (!url) {
     throw TypeError("not found id")

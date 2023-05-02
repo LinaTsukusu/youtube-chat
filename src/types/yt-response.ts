@@ -148,6 +148,9 @@ export interface LiveChatPaidStickerRenderer extends MessageRendererBase {
   stickerDisplayHeight: number
   backgroundColor: number
   authorNameTextColor: number
+  headerPrimaryText: {
+    runs: MessageRun[]
+  }
 }
 
 export interface LiveChatMembershipItemRenderer extends MessageRendererBase {
@@ -157,12 +160,21 @@ export interface LiveChatMembershipItemRenderer extends MessageRendererBase {
   authorBadges: AuthorBadge[]
 }
 
+export interface LiveChatMembershipMilestoneRenderer extends MessageRendererBase {
+  headerPrimaryText: {
+    runs: MessageRun[]
+  }
+  empty: boolean
+  authorBadges: AuthorBadge[]
+}
+
 export interface AddChatItemAction {
   item: {
     liveChatTextMessageRenderer?: LiveChatTextMessageRenderer
     liveChatPaidMessageRenderer?: LiveChatPaidMessageRenderer
     liveChatMembershipItemRenderer?: LiveChatMembershipItemRenderer
     liveChatPaidStickerRenderer?: LiveChatPaidStickerRenderer
+    LiveChatMembershipMilestoneRenderer?: LiveChatMembershipMilestoneRenderer
     liveChatViewerEngagementMessageRenderer?: object
   }
   clientId: string
