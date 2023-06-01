@@ -36,11 +36,13 @@ export class LiveChat extends (EventEmitter as new () => TypedEmitter<LiveChatEv
   }
 
   async start(): Promise<boolean> {
-    if (this.#observer) {
-      return false
-    }
     try {
       const options = await fetchLivePage(this.#id, this.#chatType)
+      if (this.#observer && this.liveId == options.liveId) {
+        return false
+      } else if (this.#observer && this.liveId != options.liveId) {
+        this.stop("liveID is changed")
+      }
       this.liveId = options.liveId
       this.#options = options
 

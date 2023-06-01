@@ -1,6 +1,6 @@
 {
   "name": "youtube-chat",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/advancedbear/youtube-chat.git",
