@@ -29,6 +29,9 @@
     
     // Or specify LiveID in Stream manually.
     const liveChat = new LiveChat({liveId: "LIVE_ID_HERE"})
+
+    // If the second argument is `true`, fetch "LiveChat" instead of "TopChat".
+    const liveChat = new LiveChat({handle: "HANDLE_NAME_HERE"}, true)
     ```
 4. Add events
     ```typescript

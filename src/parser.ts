@@ -3,6 +3,7 @@ import {
   FetchOptions,
   GetLiveChatResponse,
   LiveChatMembershipItemRenderer,
+  LiveChatMembershipMilestoneRenderer,
   LiveChatPaidMessageRenderer,
   LiveChatPaidStickerRenderer,
   LiveChatTextMessageRenderer,
@@ -11,7 +12,7 @@ import {
 } from "./types/yt-response"
 import { ChatItem, ImageItem, MessageItem } from "./types/data"
 
-export function getOptionsFromLivePage(data: string): FetchOptions & { liveId: string } {
+export function getOptionsFromLivePage(data: string, chatType?: boolean): FetchOptions & { liveId: string } {
   let liveId: string
   const idResult = data.match(/<link rel="canonical" href="https:\/\/www.youtube.com\/watch\?v=(.+?)">/)
   if (idResult) {
@@ -42,9 +43,16 @@ export function getOptionsFromLivePage(data: string): FetchOptions & { liveId: s
   }
 
   let continuation: string
-  const continuationResult = data.match(/['"]continuation['"]:\s*['"](.+?)['"]/)
+  const continuationResult = data.matchAll(/['"]continuation['"]:\s*['"](.+?)['"]/g)
   if (continuationResult) {
-    continuation = continuationResult[1]
+    const list = Array.from(continuationResult)
+    if (chatType) {
+      /** すべてのチャットの取得時に利用するcontinuation */
+      continuation = list[2][1]
+    } else {
+      /** トップチャットの取得時に利用するcontinuation */
+      continuation = list[1][1]
+    }
   } else {
     throw new Error("Continuation was not found")
   }
@@ -125,6 +133,7 @@ function rendererFromAction(
   | LiveChatPaidMessageRenderer
   | LiveChatPaidStickerRenderer
   | LiveChatMembershipItemRenderer
+  | LiveChatMembershipMilestoneRenderer
   | null {
   if (!action.addChatItemAction) {
     return null
@@ -138,6 +147,8 @@ function rendererFromAction(
     return item.liveChatPaidStickerRenderer
   } else if (item.liveChatMembershipItemRenderer) {
     return item.liveChatMembershipItemRenderer
+  } else if (item.LiveChatMembershipMilestoneRenderer) {
+    return item.LiveChatMembershipMilestoneRenderer
   }
   return null
 }
@@ -151,10 +162,11 @@ function parseActionToChatItem(data: Action): ChatItem | null {
   let message: MessageRun[] = []
   if ("message" in messageRenderer) {
     message = messageRenderer.message.runs
+  } else if ("empty" in messageRenderer) {
+    message = messageRenderer.headerPrimaryText.runs
   } else if ("headerSubtext" in messageRenderer) {
     message = messageRenderer.headerSubtext.runs
   }
-
   const authorNameText = messageRenderer.authorName?.simpleText ?? ""
   const ret: ChatItem = {
     id: messageRenderer.id,
