@@ -236,6 +236,35 @@ describe("Parser", () => {
       ])
     })
 
+    test("Super Chat (No message)", () => {
+      const res = JSON.parse(readFileSync(__dirname + "/testdata/get_live_chat.super-chat-no-msg.json").toString())
+      const [chatItems, continuation] = parseChatData(res)
+      expect(continuation).toBe("test-continuation:01")
+      expect(chatItems).toMatchObject([
+        {
+          id: "id",
+          author: {
+            name: "authorName",
+            thumbnail: {
+              url: "https://author.thumbnail.url",
+              alt: "authorName",
+            },
+            channelId: "channelId",
+          },
+          message: [],
+          superchat: {
+            amount: "¥320",
+            color: "#00E5FF",
+          },
+          isMembership: true,
+          isVerified: false,
+          isOwner: false,
+          isModerator: false,
+          timestamp: new Date("2021-01-01"),
+        },
+      ])
+    })
+
     test("Super Sticker", () => {
       const res = JSON.parse(readFileSync(__dirname + "/testdata/get_live_chat.super-sticker.json").toString())
       const [chatItems, continuation] = parseChatData(res)
