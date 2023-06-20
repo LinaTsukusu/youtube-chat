@@ -51,5 +51,21 @@ describe("requests", () => {
       expect(mockGet).toHaveBeenCalledWith("https://www.youtube.com/watch?v=liveId")
       expect(mockGetOptionsFromLivePage).toHaveBeenCalledWith("responseData")
     })
+
+    test("Handle request", async () => {
+      const mockGet = axios.get as jest.Mock
+      mockGet.mockResolvedValue({ data: "responseData" })
+      await fetchLivePage({ handle: "@handle" })
+      expect(mockGet).toHaveBeenCalledWith("https://www.youtube.com/@handle/live")
+      expect(mockGetOptionsFromLivePage).toHaveBeenCalledWith("responseData")
+    })
+
+    test("Handle without '@' request", async () => {
+      const mockGet = axios.get as jest.Mock
+      mockGet.mockResolvedValue({ data: "responseData" })
+      await fetchLivePage({ handle: "handle" })
+      expect(mockGet).toHaveBeenCalledWith("https://www.youtube.com/@handle/live")
+      expect(mockGetOptionsFromLivePage).toHaveBeenCalledWith("responseData")
+    })
   })
 })
