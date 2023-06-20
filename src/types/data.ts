@@ -18,6 +18,10 @@ export interface ChatItem {
     color: string
     sticker?: ImageItem
   }
+  membershipGift?: {
+    message: MessageItem[]
+    image?: ImageItem
+  }
   isMembership: boolean
   isVerified: boolean
   isOwner: boolean
