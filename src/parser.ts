@@ -148,12 +148,12 @@ function rendererFromAction(
   } else if (item.liveChatMembershipItemRenderer) {
     return item.liveChatMembershipItemRenderer
   } else if (item.liveChatSponsorshipsGiftPurchaseAnnouncementRenderer) {
-    const parentRenderer = item.liveChatSponsorshipsGiftPurchaseAnnouncementRenderer;
+    const parentRenderer = item.liveChatSponsorshipsGiftPurchaseAnnouncementRenderer
     return {
       id: parentRenderer.id,
       timestampUsec: parentRenderer.timestampUsec,
       authorExternalChannelId: parentRenderer.authorExternalChannelId,
-      ...parentRenderer.header.liveChatSponsorshipsHeaderRenderer
+      ...parentRenderer.header.liveChatSponsorshipsHeaderRenderer,
     }
   }
   return null
@@ -228,9 +228,9 @@ function parseActionToChatItem(data: Action): ChatItem | null {
       color: convertColorToHex6(messageRenderer.bodyBackgroundColor),
     }
   } else if (
-    data.addChatItemAction?.item.liveChatSponsorshipsGiftPurchaseAnnouncementRenderer
-    && "primaryText" in messageRenderer
-    && messageRenderer.primaryText.runs
+    data.addChatItemAction?.item.liveChatSponsorshipsGiftPurchaseAnnouncementRenderer &&
+    "primaryText" in messageRenderer &&
+    messageRenderer.primaryText.runs
   ) {
     ret.membershipGift = {
       message: parseMessages(messageRenderer.primaryText.runs),
@@ -238,7 +238,7 @@ function parseActionToChatItem(data: Action): ChatItem | null {
     if (messageRenderer.image?.thumbnails?.[0]) {
       ret.membershipGift.image = {
         ...messageRenderer.image.thumbnails[0],
-        alt: ""
+        alt: "",
       }
     }
   }

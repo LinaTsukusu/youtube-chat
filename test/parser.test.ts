@@ -294,14 +294,14 @@ describe("Parser", () => {
             image: {
               url: "https://www.gstatic.com/youtube/img/sponsorships/sponsorships_gift_purchase_announcement_artwork.png",
               alt: "",
-            }
+            },
           },
           isMembership: false,
           isVerified: false,
           isOwner: false,
           isModerator: false,
           timestamp: new Date("2021-01-01"),
-        }
+        },
       ])
     })
 
