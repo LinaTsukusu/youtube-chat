@@ -1,10 +1,10 @@
 import { EventEmitter } from "events"
 import TypedEmitter from "typed-emitter"
-import { ChatItem } from "./types/data"
+import { ChatItem, YoutubeId } from "./types/data"
 import { FetchOptions } from "./types/yt-response"
 import { fetchChat, fetchLivePage } from "./requests"
 
-interface LiveChatEvents {
+type LiveChatEvents = {
   start: (liveId: string) => void
   end: (reason?: string) => void
   chat: (chatItem: ChatItem) => void
@@ -19,12 +19,12 @@ export class LiveChat extends (EventEmitter as new () => TypedEmitter<LiveChatEv
   #observer?: NodeJS.Timer
   #options?: FetchOptions
   readonly #interval: number = 1000
-  readonly #id: { channelId: string } | { liveId: string }
+  readonly #id: YoutubeId
 
-  constructor(id: { channelId: string } | { liveId: string }, interval = 1000) {
+  constructor(id: YoutubeId, interval = 1000) {
     super()
-    if (!id || (!("channelId" in id) && !("liveId" in id))) {
-      throw TypeError("Required channelId or liveId.")
+    if (!id || (!("channelId" in id) && !("liveId" in id) && !("handle" in id))) {
+      throw TypeError("Required channelId or liveId or handle.")
     } else if ("liveId" in id) {
       this.liveId = id.liveId
     }
